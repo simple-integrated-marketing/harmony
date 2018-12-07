@@ -9,8 +9,7 @@
         "build": "webpack --mode production --config webpack.config.js --progress --hide-modules"
     },
     "dependencies": {
-        "harsh-reset": "^1.1.1",
-        "include-media": "^1.4.9"
+        "harsh-reset": "^1.1.1"
     },
     "browserslist": [
         "> 1%",
