@@ -1,0 +1,42 @@
+/*
+ * Typeset
+ */
+
+@mixin typeset($font-family: "sans", $size: 16, $line-height: 2, $below: 2) {
+    line-height: #{$line-height}rem;
+    $cap-height: map-get($cap-heights, $font-family);
+
+    @if (not $cap-height) {
+        @error ('cap-height not defined in #{$cap-heights}.');
+    }
+
+    @if (not $font-family) {
+        @error ('font-family not defined in #{$cap-heights}.');
+    }
+
+    font-family: $font-family;
+
+    $rootsize: 16; // This is the base grid unit we use in Figma.
+    $baseline-shift: #{(
+            $size / 2 * (($line-height * $rootsize / $size) - $cap-height)
+        ) / $rootsize + 0.00001};
+    $baseline-push: #{$below -
+        (
+            ($size / 2 * (($line-height * $rootsize / $size) - $cap-height)) /
+                $rootsize + 0.00001
+        )};
+
+    font-size: #{$size / $rootsize}rem;
+    margin-bottom: #{$baseline-push}rem;
+    padding-top: #{$baseline-shift}rem;
+
+    html.has-guides & {
+        background-image: linear-gradient(
+            to bottom,
+            $colour-baseline-grid 0,
+            transparent 1px
+        );
+        background-repeat: repeat-y;
+        background-size: 100% 1rem;
+    }
+}

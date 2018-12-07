@@ -1,0 +1,294 @@
+// =============================================================================
+// Grid
+// =============================================================================
+
+/*
+ * Short description goes here.
+ *
+ * Usage:
+ * @include ...
+ */
+
+@mixin grid-container(
+    $default-column-width: null,
+    $column-gutters: $column-gutters,
+    $row-gutters: $row-gutters
+) {
+    width: 100%; // Prevents collapse when flex parent
+    position: relative;
+
+    @if (type-of($container-padding-left) == "map") {
+        @include fluid-property-map(
+            $property: "padding-left",
+            $values: $container-padding-left
+        );
+    }
+
+    @if (type-of($container-padding-right) == "map") {
+        @include fluid-property-map(
+            $property: "padding-right",
+            $values: $container-padding-right
+        );
+    }
+
+    @if (type-of($container-padding-top) == "map") {
+        @include fluid-property-map(
+            $property: "padding-top",
+            $values: $container-padding-top
+        );
+    }
+
+    @if (type-of($container-padding-bottom) == "map") {
+        @include fluid-property-map(
+            $property: "padding-bottom",
+            $values: $container-padding-bottom
+        );
+    }
+
+    &__row {
+        @include grid-row(
+            $row-gutters: $row-gutters,
+            $column-gutters: $column-gutters,
+            $default-column-width: $default-column-width
+        );
+    }
+
+    @if ($default-column-width != null) {
+        &__column {
+            @include grid-column(
+                $width: $default-column-width,
+                $column-gutters: $column-gutters,
+                $row-gutters: $row-gutters
+            );
+        }
+    }
+
+    @if (type-of($row-gutters) == "map") {
+        @include grid-gutter($side: top, $values: $row-gutters, $size: -1);
+    }
+}
+
+/*
+ * Short description goes here.
+ *
+ * Usage:
+ * @include ...
+ */
+@mixin grid-row(
+    $default-column-width: 1,
+    $row-gutters: $row-gutters,
+    $column-gutters: $column-gutters,
+    $nested: false
+) {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+
+    @if (type-of($row-gutters) == "map") {
+        @include grid-gutter($side: top, $values: $row-gutters, $size: -1);
+    }
+
+    @if (type-of($column-gutters) == "map" and $nested) {
+        @include grid-gutter(
+            $side: left,
+            $values: $column-gutters,
+            $size: -0.5
+        );
+        @include grid-gutter(
+            $side: right,
+            $values: $column-gutters,
+            $size: -0.5
+        );
+    }
+
+    > * {
+        @include grid-column(
+            $width: $default-column-width,
+            $column-gutters: $column-gutters,
+            $row-gutters: $row-gutters
+        );
+    }
+
+    .has-rows & {
+        box-shadow: inset 0px 0px 0px 2000px $colour-rows;
+    }
+}
+
+/*
+ * Short description goes here.
+ *
+ * Usage:
+ * @include ...
+ */
+@mixin grid-column(
+    $width: null,
+    $column-gutters: $column-gutters,
+    $row-gutters: $row-gutters,
+    $gutter-left: 0.5,
+    $gutter-right: 0.5,
+    $gutter-top: 1,
+    $gutter-bottom: 0,
+    $spill-right: false,
+    $spill-left: false,
+    $margin-left: null,
+    $margin-right: null
+) {
+    position: relative;
+    min-width: 0;
+
+    @if ($width != null) {
+        width: percentage($width);
+    }
+
+    @if (type-of($column-gutters) == "map") {
+        @include grid-gutter(
+            $side: left,
+            $values: $column-gutters,
+            $size: $gutter-left
+        );
+        @include grid-gutter(
+            $side: right,
+            $values: $column-gutters,
+            $size: $gutter-right
+        );
+    }
+
+    @if (type-of($row-gutters) == "map") {
+        @include grid-gutter(
+            $side: top,
+            $values: $row-gutters,
+            $size: $gutter-top
+        );
+        @include grid-gutter(
+            $side: bottom,
+            $values: $row-gutters,
+            $size: $gutter-bottom
+        );
+    }
+
+    @if ($spill-left and type-of($container-padding-left) == "map") {
+        @include grid-column-spill(
+            $direction: left,
+            $distance: $container-padding-left
+        );
+    }
+
+    @if ($spill-right and type-of($container-padding-right) == "map") {
+        @include grid-column-spill(
+            $direction: right,
+            $distance: $container-padding-right
+        );
+    }
+
+    @if ($margin-left != null) {
+        margin-left: percentage($margin-left);
+    }
+
+    @if ($margin-right != null) {
+        margin-right: percentage($margin-right);
+    }
+
+    .has-blocks & > * {
+        box-shadow: inset 0px 0px 0px 2000px $colour-blocks;
+    }
+}
+
+/*
+ * Add a gutter to a chosen size of an element.
+ * This forms the core of the mixins below.
+ *
+ * Usage:
+ * @include grid-gutter($side: top, $size: 1);
+ */
+@mixin grid-gutter($side, $values: null, $size: 0.5) {
+    @if (type-of($values) != "map") {
+        @error ('Grid gutters must be an array.');
+    }
+
+    $padding-or-margin: if($size < 0, "margin", "padding");
+
+    $property: "#{$padding-or-margin}-#{$side}";
+
+    @include fluid-property-map(
+        $property: $property,
+        $values: $values,
+        $size: $size
+    );
+}
+
+/*
+ * Short description goes here.
+ *
+ * Usage:
+ * @include ...
+ */
+@mixin grid-column-spill($direction, $distance: null, $gutter: null) {
+    $opposite: null;
+
+    @if $direction == left {
+        $opposite: right;
+    } @else if $direction == right {
+        $opposite: left;
+    } @else if $direction == top {
+        $opposite: bottom;
+    } @else if $direction == bottom {
+        $opposite: top;
+    } @else {
+        @error ('Direction must be left, right, top or bottom.');
+    }
+
+    position: relative;
+
+    @include fluid-property-map(
+        $property: #{$direction},
+        $values: $distance,
+        $size: -1
+    );
+
+    > * {
+        @include fluid-property-map(
+            "margin-#{$opposite}",
+            $values: $distance,
+            $size: -1
+        );
+    }
+}
+
+@mixin grid-overlay {
+    @include grid-container($default-column-width: 1/24);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+    display: block;
+    visibility: hidden;
+    margin-top: 0;
+
+    html.has-grid & {
+        visibility: visible;
+    }
+
+    &__row {
+        height: 100vh;
+        margin-top: 0;
+    }
+
+    &__column:after {
+        display: block;
+        content: "";
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        background-color: $colour-columns;
+
+        @if (type-of($column-gutters) != "map") {
+            border-right: 1px solid rgba($colour-columns, 0.75);
+        }
+    }
+}

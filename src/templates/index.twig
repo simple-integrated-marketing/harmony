@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+   <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h1>Grids Demo</h1>
+                <h2>Keyboard shortcuts:</h2>
+                <p>I = Show / hide row blocks.&nbsp;&nbsp;&nbsp;&nbsp;O = Show / hide baseline grid.&nbsp;&nbsp;&nbsp;&nbsp;P = Show / hide column grid.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Constrained</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="one-column-demo">
+        <div class="one-column-demo__row">
+            {% for i in 1..2 %}
+                <div class="one-column-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-demo">
+        <div class="two-column-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="three-column-demo">
+        <div class="three-column-demo__row">
+            {% for i in 1..6 %}
+                <div class="three-column-column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="four-column-demo">
+        <div class="four-column-demo__row">
+            {% for i in 1..8 %}
+                <div class="four-column-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="six-column-demo">
+        <div class="six-column-demo__row">
+            {% for i in 1..12 %}
+                <div class="six-column-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="eight-column-demo">
+        <div class="eight-column-demo__row">
+            {% for i in 1..16 %}
+                <div class="eight-column-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Constrained + spaced</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-column-spaced-demo">
+        <div class="two-column-spaced-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-spaced-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="three-column-spaced-demo">
+        <div class="three-column-spaced-demo__row">
+            {% for i in 1..6 %}
+                <div class="three-column-spaced-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="four-column-spaced-demo">
+        <div class="four-column-spaced-demo__row">
+            {% for i in 1..8 %}
+                <div class="four-column-spaced-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Spill to Edge</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-column-spill-left-demo">
+        <div class="two-column-spill-left-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-spill-left-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-spill-right-demo">
+        <div class="two-column-spill-right-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-spill-right-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-spill-demo">
+        <div class="two-column-spill-demo__row">
+            {% for i in 1..2 %}
+                <div class="two-column-spill-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="three-column-spill-demo">
+        <div class="three-column-spill-demo__row">
+            {% for i in 1..3 %}
+                <div class="three-column-spill-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="four-column-spill-demo">
+        <div class="four-column-spill-demo__row">
+            {% for i in 1..4 %}
+                <div class="four-column-spill-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Spill to edge with outside gutters</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-column-spill-left-with-outside-gutters-demo">
+        <div class="two-column-spill-left-with-outside-gutters-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-spill-left-with-outside-gutters-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-spill-right-with-outside-gutters-demo">
+        <div class="two-column-spill-right-with-outside-gutters-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-spill-right-with-outside-gutters-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-spill-with-outside-gutters-demo">
+        <div class="two-column-spill-with-outside-gutters-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-spill-with-outside-gutters-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="three-column-spill-with-outside-gutters-demo">
+        <div class="three-column-spill-with-outside-gutters-demo__row">
+            {% for i in 1..6 %}
+                <div class="three-column-spill-with-outside-gutters-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="four-column-spill-with-outside-gutters-demo">
+        <div class="four-column-spill-with-outside-gutters-demo__row">
+            {% for i in 1..8 %}
+                <div class="four-column-spill-with-outside-gutters-demo__column">
+                    <p>Column</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Images of uniform heights on grid</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="one-column-with-images-demo">
+        <div class="one-column-with-images-demo__row">
+            {% for i in 1..2 %}
+            <div class="one-column-with-images-demo__column">
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-with-images-demo">
+        <div class="two-column-with-images-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="three-column-with-images-demo">
+        <div class="three-column-with-images-demo__row">
+            {% for i in 1..6 %}
+                <div class="three-column-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="four-column-with-images-demo">
+        <div class="four-column-with-images-demo__row">
+            {% for i in 1..8 %}
+                <div class="four-column-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="six-column-with-images-demo">
+        <div class="six-column-with-images-demo__row">
+            {% for i in 1..12 %}
+                <div class="six-column-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="eight-column-with-images-demo">
+        <div class="eight-column-with-images-demo__row">
+            {% for i in 1..16 %}
+                <div class="eight-column-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Nested grids</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="nested-grid-demo">
+        <div class="nested-grid-demo__row">
+            {% for i in 1..2 %}
+                <div class="nested-grid-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="nested-grid-demo__column">
+                <div class="nested-grid-demo-nested-grid">
+                    {% for i in 1..6 %}
+                        <div class="nested-grid-demo-nested-grid__row">
+                            <div class="nested-grid-demo-nested-grid__column">
+                                <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Conform the height of one image to the height of its sibling</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-column-conform-images-demo">
+        <div class="two-column-conform-images-demo__row">
+            <div class="two-column-conform-images-demo__column">
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/1200?text=3:4">
+                    </div>
+                </div>
+            </div>
+            <div class="two-column-conform-images-demo__column">
+                <div class="image-stretch-demo">
+                    <div>
+                        <img src="https://via.placeholder.com/1200?text=Square fit to match height of sibling">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Images constrained to mixed aspect ratios on grid</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-column-spill-left-with-images-demo">
+        <div class="two-column-spill-left-with-images-demo__row">
+            {% for i in 1..2 %}
+                <div class="two-column-spill-left-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-spill-right-with-images-demo">
+        <div class="two-column-spill-right-with-images-demo__row">
+            {% for i in 1..2 %}
+                <div class="two-column-spill-right-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="two-column-spill-with-images-demo">
+        <div class="two-column-spill-with-images-demo__row">
+            {% for i in 1..2 %}
+                <div class="two-column-spill-with-images-demo__column">
+                    <div>
+                        <div>
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="three-column-spill-with-images-demo">
+        <div class="three-column-spill-with-images-demo__row">
+            <div class="three-column-spill-with-images-demo__column">
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/1200?text=Cropped to Square">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/1500x2000?text=Cropped to 16:9">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/2000x1500?text=Cropped to 4:3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="four-column-spill-with-images-demo">
+        <div class="four-column-spill-with-images-demo__row">
+            <div class="four-column-spill-with-images-demo__column">
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/1200?text=Cropped to Square">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/1500x2000?text=Cropped to 16:9">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/2000x1500?text=Cropped to 4:3">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <img src="https://via.placeholder.com/1200x900?text=Cropped to 3:2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
+                <h3>Typography</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="typography-demo">
+        <div class="typography-demo__row">
+            <div class="typography-demo__title">
+                <h2>Side Heading 2.</h2>
+            </div>
+
+            <div class="typography-demo__body">
+                <h2>This is a heading 2.</h2>
+                <h3>This is a heading 3.</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin dapibus volutpat dolor eget
+                    tincidunt.
+                    Vivamus vel lobortis erat, ut varius justo. Integer consectetur nunc non erat venenatis tempor.
+                    Nulla
+                    vestibulum quam iaculis, mollis tortor venenatis, cursus metus. Cras ultricies bibendum tellus,
+                    a posuere
+                    ipsum pretium id. Vivamus est erat, viverra non nulla vitae, pulvinar lacinia tortor. Etiam
+                    nulla neque,
+                    tempor ac condimentum ut, sagittis eget enim.</p>
+                <p>Proin ornare tempus magna ut faucibus. Ut a ex tristique, scelerisque eros ut, aliquam quam.
+                    Proin ac
+                    dignissim sapien. Aliquam pharetra diam non suscipit varius. Praesent id erat at ante bibendum
+                    cursus.
+                    Aenean id lectus vel nibh finibus pretium at id dui. Ut a diam mi. Pellentesque ultrices ipsum
+                    ligula, a
+                    mattis velit scelerisque eu. Cras quis ullamcorper arcu. Nam sed leo orci.</p>
+                <p>Praesent interdum felis id tortor sagittis, in cursus sem volutpat. Donec et mattis leo. Aliquam
+                    erat
+                    volutpat. Curabitur sollicitudin sem non auctor dapibus. Sed posuere, libero at euismod
+                    euismod, tellus mi
+                    blandit ante, ac varius orci enim non metus. Nam elit lorem, interdum at rutrum et,
+                    sollicitudin quis ex.
+                    Quisque facilisis sem ex, non dignissim orci dictum posuere. Sed blandit nec quam ac laoreet.
+                    Pellentesque
+                    mollis sem vel eros scelerisque auctor at a urna. Nam ultricies, sapien id aliquet sagittis,
+                    velit mauris
+                    tristique felis, et dapibus risus lacus et odio. Sed ultricies ipsum ac sapien commodo egestas.
+                    Maecenas
+                    tincidunt ornare tempor.
+                </p>
+                <p>Sed diam mi, consectetur eu vulputate vitae, dignissim sit amet mi. Vivamus ac sodales arcu,
+                    ornare
+                    porttitor lacus. Integer quis ex id quam interdum faucibus. Nullam placerat interdum tempor.
+                    Nunc feugiat
+                    eleifend ligula sit amet accumsan. Sed a tristique tortor. Nullam commodo mi vel lectus tempus
+                    vehicula.
+                    Phasellus vulputate leo in ex tincidunt, nec luctus nibh viverra. Nullam dignissim porttitor
+                    nulla, et
+                    fringilla nunc scelerisque ac.</p>
+                <p>Nulla viverra nibh nibh, et maximus tellus viverra nec. Donec ultricies aliquet suscipit. Nulla
+                    tincidunt
+                    eros arcu, eget posuere ex malesuada ac. Praesent ornare ipsum pretium, ultricies turpis at,
+                    fermentum
+                    erat. Phasellus urna ipsum, consequat eget nulla eget, rhoncus viverra orci. Aliquam posuere
+                    elementum
+                    laoreet. Nam eleifend libero sed blandit consequat. Sed semper lacinia sapien, ac blandit erat
+                    rhoncus ut.
+                    Sed ut porta ante. Vivamus nec imperdiet velit, vel mollis nibh.</p>
+            </div>
+
+            <div class="typography-demo__sidebar">
+                <h4>This is a h4 title.</h4>
+            </div>
+        </div>
+    </div>
+
+  <div class="images-demo">
+        <div class="images-demo__row">
+            <div class="images-demo__title">
+                <h2>Images</h2>
+            </div>
+
+            <div class="images-demo__body">
+                <h3>Cropped to square</h3>
+                <div>
+                    <div class="image-square-demo">
+                        <img src="https://via.placeholder.com/1200?text=Cropped to Square">
+                    </div>
+                </div>
+                <h3>Square cropped to 2:1</h3>
+                <div>
+                    <div class="image-2-1-demo">
+                        <img src="https://via.placeholder.com/1200?text=Cropped to 2:1">
+                    </div>
+                </div>
+                <h3>Square cropped to 3:1</h3>
+                <div>
+                    <div class="image-3-1-demo">
+                        <img src="https://via.placeholder.com/1200?text=Cropped to 3:1">
+                    </div>
+                </div>
+                <h3>Square cropped to 16:9</h3>
+                <div>
+                    <div class="image-16-9-demo">
+                        <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                    </div>
+                </div>
+                <h3>Square cropped to 4:3</h3>
+                <div>
+                    <div class="image-4-3-demo">
+                        <img src="https://via.placeholder.com/1200?text=Cropped to 4:3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

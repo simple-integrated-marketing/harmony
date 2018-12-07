@@ -1,0 +1,115 @@
+// =============================================================================
+// Fluid Property
+// =============================================================================
+
+/*
+ * Short description goes here.
+ *
+ * Usage:
+ * @include ...
+ */
+@mixin fluid-property(
+    $property,
+    $min,
+    $max,
+    $start,
+    $end,
+    $applyBelow: true,
+    $applyAbove: true,
+    $size: 1
+) {
+    @if (not unitless($start)) {
+        @error '$start must be unitless.';
+    }
+
+    @if (not unitless($end)) {
+        @error '$end must be unitless.';
+    }
+
+    $difference: ($max - $min) / ($end - $start) * 100vw;
+    $adder: ($min * $end - $max * $start) / ($end - $start) + 0px;
+    $start: $start + 0px;
+    $end: $end + 0px;
+    $min: $min + 0px;
+    $max: $max + 0px;
+
+    // If $applyBelow is true, the lower value will also apply below the $start breakpoint.
+    @if $applyBelow {
+        @media (max-width: #{$start}) {
+            #{$property}: calc(#{$min} * #{$size});
+        }
+    }
+
+    // If $applyAbove is true, the higher value will also apply above the $end breakpoint.
+    @if $applyAbove {
+        @media (min-width: #{$end}) {
+            #{$property}: calc(#{$max} * #{$size});
+        }
+    }
+
+    // Apply the tween calculation from the $start to $end breakpoints.
+    @media (min-width: #{$start}) and (max-width: #{$end}) {
+        #{$property}: calc((#{$difference} + #{$adder}) * #{$size});
+    }
+}
+
+/*
+ * Short description goes here.
+ *
+ * Usage:
+ * @include ...
+ */
+@mixin fluid-property-map(
+    $property: null,
+    $values: null,
+    $size: 1,
+    $breakpoints: $breakpoints
+) {
+    $selected-breakpoint-ids: map-keys($values);
+    $selected-breakpoint-values: map-values($values);
+
+    @if ($property == null) {
+        @error 'Property must be specified.';
+    }
+
+    @if ($values == null) {
+        @error 'Value must be specified.';
+    }
+
+    @for $i from 1 through length($selected-breakpoint-ids) - 1 {
+        $is-last: $i == length($selected-breakpoint-ids) - 1;
+        $is-first: $i == 1;
+
+        $min-value: strip-unit(nth($selected-breakpoint-values, $i));
+        $max-value: strip-unit(nth($selected-breakpoint-values, $i + 1));
+
+        $min-breakpoint-id: nth($selected-breakpoint-ids, $i);
+        $max-breakpoint-id: nth($selected-breakpoint-ids, $i + 1);
+
+        $min-breakpoint-value: strip-unit(
+            map-get($breakpoints, $min-breakpoint-id)
+        );
+        $max-breakpoint-value: strip-unit(
+            map-get($breakpoints, $max-breakpoint-id)
+        );
+
+        @if ($max-breakpoint-value == null) {
+            @error 'The value "#{$max-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
+        }
+
+        @if ($min-breakpoint-value == null) {
+            @error 'The value "#{$min-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
+        }
+
+        @include fluid-property(
+            $property,
+            $min-value,
+            $max-value,
+            $min-breakpoint-value,
+            $max-breakpoint-value,
+            $is-first,
+            $is-last,
+            $size
+        );
+    }
+}

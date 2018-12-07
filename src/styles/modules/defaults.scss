@@ -1,0 +1,52 @@
+// =============================================================================
+// Default Variables
+// =============================================================================
+
+// Whats this do?
+$breakpoints: (
+    min: 320px,
+    xs: 340px,
+    sm: 600px,
+    md: 900px,
+    lg: 1300px,
+    xl: 1600px,
+    xxl: 1900px,
+    xxxl: 2200px
+) !default;
+
+// Whats this do?
+$container-padding-left: (
+    min: 16px,
+    xxxl: 400px
+) !default;
+
+// Whats this do?
+$container-padding-right: $container-padding-left !default;
+$container-padding-top: null !default;
+$container-padding-bottom: null !default;
+
+// Whats this do?
+$column-gutters: (
+    min: 8px,
+    xxxl: 16px
+) !default;
+
+// Whats this do?
+$row-gutters: $column-gutters !default;
+
+// Whats this do?
+$font-sizes: (
+    min: 12px,
+    xxxl: 20px
+) !default;
+
+// Whats this do?
+$cap-heights: (
+    sans: 0.7
+) !default;
+
+// Whats this do?
+$colour-baseline-grid: rgba(#0f0, 1) !default;
+$colour-columns: rgba(#f00, 0.25) !default;
+$colour-blocks: rgba(#f0f, 0.25) !default;
+$colour-rows: rgba(#ff0, 0.25) !default;
