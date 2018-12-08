@@ -4,10 +4,11 @@
 
 ## Features
 
-- CSS Normalising
-- Vertical rhythm
-- Grid helpers
-- Alignment helpers
+- Insanely customisable
+- Global config for body padding, grid gutters, font-sizes and character heights
+- Modern IE10+ CSS normalization
+- Built with vertical-rhythm in mind
+- Minimal CSS inheritance chain
 
 ## Getting started
 
@@ -22,10 +23,6 @@ Also included are some helpful grid tools.
 They are toggled with key shortcuts - see the source file for the details.<br>
 To use these tools, import the script in your JS:<br>
 `import 'harmony/grid-tools';`
-
-- Grid overlays
-- Row highlighting
-- Column guide
 
 ## Contributors:
 [Aaron mccaffery](https://github.com/aaronmccaffery) and [@benrogerson](https://twitter.com/benrogerson).
