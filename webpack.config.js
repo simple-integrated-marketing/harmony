@@ -10,9 +10,9 @@ const HtmlBeautifyPlugin = require("html-beautify-webpack-plugin");
 const settings = {
     name: "Harmony",
     devServerUrl: "http://localhost:8080",
-    jsEntry: "./src/scripts/demo",
-    dest: path.resolve(__dirname, "demo"),
-    templates: path.resolve(__dirname, "src/templates")
+    jsEntry: "./demo",
+    dest: path.resolve(__dirname, "demoBuilt"),
+    templates: path.resolve(__dirname, "demo")
 };
 
 // Configure the twig loader
