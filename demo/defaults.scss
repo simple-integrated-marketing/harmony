@@ -1,0 +1,35 @@
+$breakpoints: (
+    min: 320px,
+    xs: 340px,
+    sm: 600px,
+    md: 900px,
+    lg: 1300px,
+    xl: 1600px,
+    xxl: 1900px,
+    xxxl: 2200px
+);
+
+$container-padding-left: (
+    min: 16px,
+    xxxl: 600px
+);
+
+$container-padding-right: $container-padding-left;
+$container-padding-top: null;
+$container-padding-bottom: null;
+
+$column-gutters: (
+    min: 8px,
+    xxxl: 16px
+);
+
+$row-gutters: $column-gutters;
+
+$font-sizes: (
+    min: 12px,
+    xxxl: 18px
+);
+
+$cap-heights: (
+    Roboto: 0.7
+);
