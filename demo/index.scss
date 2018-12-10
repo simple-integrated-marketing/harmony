@@ -408,11 +408,6 @@ body > * {
     @include grid-container($default-column-width: 1/2);
 
     > * {
-        > * > * {
-            height: 8rem;
-            background-color: #333;
-        }
-
         > *:nth-child(odd) {
             @include grid-column($spill-left: true, $gutter-left: 0);
             
