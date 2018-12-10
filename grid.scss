@@ -90,27 +90,6 @@
         @include grid-gutter($side: top, $values: $row-gutters, $size: -1);
     }
 
-    @if (type-of($column-gutters) == "map" and $nested) {
-        @include grid-gutter(
-            $side: left,
-            $values: $column-gutters,
-            $size: -0.5
-        );
-        @include grid-gutter(
-            $side: right,
-            $values: $column-gutters,
-            $size: -0.5
-        );
-    }
-
-    > * {
-        @include grid-column(
-            $width: $default-column-width,
-            $column-gutters: $column-gutters,
-            $row-gutters: $row-gutters
-        );
-    }
-
     .has-rows & {
         box-shadow: inset 0px 0px 0px 2000px $colour-rows;
     }

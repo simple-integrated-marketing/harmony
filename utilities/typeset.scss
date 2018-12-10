@@ -5,13 +5,13 @@
 @mixin typeset($font-family: "sans", $size: 16, $line-height: 2, $below: 2) {
     line-height: #{$line-height}rem;
     $cap-height: map-get($cap-heights, $font-family);
-
-    @if (not $cap-height) {
-        @error ('cap-height not defined in #{$cap-heights}.');
-    }
-
+    
     @if (not $font-family) {
         @error ('font-family not defined in #{$cap-heights}.');
+    }
+
+    @if (not $cap-height) {
+        @error ('cap-height metric for #{ $font-family } must be defined in $cap-heights.');
     }
 
     font-family: $font-family;
