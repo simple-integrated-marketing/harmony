@@ -30,7 +30,7 @@
     margin-bottom: #{$baseline-push}rem;
     padding-top: #{$baseline-shift}rem;
 
-    html.has-guides & {
+    html.show-guides & {
         background-image: linear-gradient(
             to bottom,
             $colour-baseline-grid 0,

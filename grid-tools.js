@@ -4,14 +4,14 @@
 
 const html = document.querySelector('html');
 
-const classHasBlocks = 'has-blocks';
-const classHasNameGuides = 'has-guides';
-const classHasNameGrid = 'has-grid';
+const classShowBlocks = 'show-block-children';
+const classShowNameGuides = 'show-guides';
+const classShowNameGrid = 'show-grid';
 
 document.addEventListener('keypress', event => {
-    (event.ctrlKey && event.key === 'i') && html.classList.toggle(classHasBlocks);
-    (event.ctrlKey && event.key === 'o') && html.classList.toggle(classHasNameGuides);
-    (event.ctrlKey && event.key === 'p') && html.classList.toggle(classHasNameGrid);
+    (event.ctrlKey && event.key === 'i') && html.classList.toggle(classShowBlocks);
+    (event.ctrlKey && event.key === 'o') && html.classList.toggle(classShowNameGuides);
+    (event.ctrlKey && event.key === 'p') && html.classList.toggle(classShowNameGrid);
 });
 
 

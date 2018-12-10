@@ -82,12 +82,12 @@
     flex-shrink: 1;
     
     @if(is-valid-map($vertical-gutters)) {
-        @include grid-gutter($side: top, $values: $vertical-gutters, $multiplier: -1);
+        @include grid-gutter($side: top, $multiplier: -1);
     }
 
     @if($nested and is-valid-map($horizontal-gutters)) {
-        @include grid-gutter($side: left, $values: $horizontal-gutters, $multiplier: -0.5);
-        @include grid-gutter($side: right, $values: $horizontal-gutters, $multiplier: -0.5);
+        @include grid-gutter($side: left, $multiplier: -0.5);
+        @include grid-gutter($side: right, $multiplier: -0.5);
     }
 }
 
@@ -120,12 +120,10 @@
     @if (is-valid-map($horizontal-gutters)) {
         @include grid-gutter(
             $side: left,
-            $values: $horizontal-gutters,
             $multiplier: $gutter-left
         );
         @include grid-gutter(
             $side: right,
-            $values: $horizontal-gutters,
             $multiplier: $gutter-right
         );
     }
@@ -133,12 +131,10 @@
     @if (is-valid-map($vertical-gutters)) {
         @include grid-gutter(
             $side: top,
-            $values: $vertical-gutters,
             $multiplier: $gutter-top
         );
         @include grid-gutter(
             $side: bottom,
-            $values: $vertical-gutters,
             $multiplier: $gutter-bottom
         );
     }
@@ -165,7 +161,7 @@
         margin-right: percentage($margin-right);
     }
 
-    .has-blocks & > * {
+    .show-block-children & > * {
         box-shadow: inset 0px 0px 0px 4000px $colour-blocks;
     }
 }
@@ -177,7 +173,15 @@
  * Usage:
  * @include grid-gutter($side: top, $multiplier: 1);
  */
-@mixin grid-gutter($side, $values: null, $multiplier: 0.5) {
+@mixin grid-gutter($side, $multiplier: 0.5) {
+    $values: null;
+    
+    @if($side == 'left' or $side == 'right') {
+        $values: $horizontal-gutters;
+    } @elseif($side == 'top' or $side == 'bottom') {
+        $values: $vertical-gutters;
+    }
+
     @if (not is-valid-map($values)) {
         @error ('Grid gutters must be a map.');
     }
@@ -245,7 +249,7 @@
     visibility: hidden;
     margin-top: 0;
 
-    html.has-grid & {
+    html.show-grid & {
         visibility: visible;
     }
 
@@ -254,8 +258,13 @@
         margin-top: 0;
     }
 
+    &__column:first-child {
+        border-left: 1px solid $colour-columns;
+    }
+
     &__column {
         padding-top: 0;
+        border-right: 1px solid $colour-columns;
     }
 
     &__column:after {

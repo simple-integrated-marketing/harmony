@@ -408,6 +408,10 @@ body > * {
     @include grid-container($default-column-width: 1/2);
 
     > * {
+        & > * > * {
+            @include wysiwyg;
+        }
+        
         > *:nth-child(odd) {
             @include grid-column($spill-left: true, $gutter-left: 0);
             
@@ -415,7 +419,7 @@ body > * {
                 @include fluid-property-map('padding-left', $container-padding-left);
 
                 & > * {
-                    @include grid-gutter($side: left, $values: $horizontal-gutters, $multiplier: 0.5);
+                    @include grid-gutter($side: left);
                 }
             }
         }
@@ -427,7 +431,7 @@ body > * {
                 @include fluid-property-map('padding-right', $container-padding-left);
 
                 & > * {
-                    @include grid-gutter($side: right, $values: $horizontal-gutters, $multiplier: 0.5);
+                    @include grid-gutter($side: right);
                 }
             }
         }
