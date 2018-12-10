@@ -184,6 +184,28 @@
     <div class="demo-title">
         <div class="demo-title__row">
             <div class="demo-title__column">
+                <h3>Spill to Edge with content constrained to grid</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="two-column-spill-with-content-constrained-to-grid-demo">
+        <div class="two-column-spill-with-content-constrained-to-grid-demo__row">
+            {% for i in 1..4 %}
+                <div class="two-column-spill-with-content-constrained-to-grid-demo__column">
+                    <div>
+                        <div>
+                            <p>Column</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="demo-title">
+        <div class="demo-title__row">
+            <div class="demo-title__column">
                 <h3>Spill to edge with outside gutters</h3>
             </div>
         </div>
@@ -354,10 +376,11 @@
             <div class="nested-grid-demo__column">
                 <div class="nested-grid-demo-nested-grid">
                     {% for i in 1..6 %}
-                        <div class="nested-grid-demo-nested-grid__row">
-                            <div class="nested-grid-demo-nested-grid__column">
-                                <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
-                            </div>
+                        <div class="nested-grid-demo-nested-grid__column">
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
+                        </div>
+                        <div class="nested-grid-demo-nested-grid__column">
+                            <img src="https://via.placeholder.com/1200?text=Cropped to 16:9">
                         </div>
                     {% endfor %}
                 </div>
@@ -451,14 +474,14 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="three-column-spill-with-images-demo__column">
                 <div>
                     <div>
                         <img src="https://via.placeholder.com/1500x2000?text=Cropped to 16:9">
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="three-column-spill-with-images-demo__column">
                 <div>
                     <div>
                         <img src="https://via.placeholder.com/2000x1500?text=Cropped to 4:3">
@@ -477,21 +500,21 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="four-column-spill-with-images-demo__column">
                 <div>
                     <div>
                         <img src="https://via.placeholder.com/1500x2000?text=Cropped to 16:9">
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="four-column-spill-with-images-demo__column">
                 <div>
                     <div>
                         <img src="https://via.placeholder.com/2000x1500?text=Cropped to 4:3">
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="four-column-spill-with-images-demo__column">
                 <div>
                     <div>
                         <img src="https://via.placeholder.com/1200x900?text=Cropped to 3:2">

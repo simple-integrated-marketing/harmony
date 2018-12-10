@@ -8,37 +8,36 @@
  * Usage:
  * @include ...
  */
-
 @mixin grid-container(
     $default-column-width: null,
-    $column-gutters: $column-gutters,
-    $row-gutters: $row-gutters
+    $horizontal-gutters: $horizontal-gutters,
+    $vertical-gutters: $vertical-gutters
 ) {
     width: 100%; // Prevents collapse when flex parent
     position: relative;
 
-    @if (type-of($container-padding-left) == "map") {
+    @if (is-valid-map($container-padding-left)) {
         @include fluid-property-map(
             $property: "padding-left",
             $values: $container-padding-left
         );
     }
 
-    @if (type-of($container-padding-right) == "map") {
+    @if (is-valid-map($container-padding-right)) {
         @include fluid-property-map(
             $property: "padding-right",
             $values: $container-padding-right
         );
     }
 
-    @if (type-of($container-padding-top) == "map") {
+    @if (is-valid-map($container-padding-top)) {
         @include fluid-property-map(
             $property: "padding-top",
             $values: $container-padding-top
         );
     }
 
-    @if (type-of($container-padding-bottom) == "map") {
+    @if (is-valid-map($container-padding-bottom)) {
         @include fluid-property-map(
             $property: "padding-bottom",
             $values: $container-padding-bottom
@@ -47,8 +46,8 @@
 
     &__row {
         @include grid-row(
-            $row-gutters: $row-gutters,
-            $column-gutters: $column-gutters,
+            $vertical-gutters: $vertical-gutters,
+            $horizontal-gutters: $horizontal-gutters,
             $default-column-width: $default-column-width
         );
     }
@@ -57,14 +56,10 @@
         &__column {
             @include grid-column(
                 $width: $default-column-width,
-                $column-gutters: $column-gutters,
-                $row-gutters: $row-gutters
+                $horizontal-gutters: $horizontal-gutters,
+                $vertical-gutters: $vertical-gutters
             );
         }
-    }
-
-    @if (type-of($row-gutters) == "map") {
-        @include grid-gutter($side: top, $values: $row-gutters, $size: -1);
     }
 }
 
@@ -75,9 +70,9 @@
  * @include ...
  */
 @mixin grid-row(
-    $default-column-width: 1,
-    $row-gutters: $row-gutters,
-    $column-gutters: $column-gutters,
+    $default-column-width: null,
+    $vertical-gutters: $vertical-gutters,
+    $horizontal-gutters: $horizontal-gutters,
     $nested: false
 ) {
     display: flex;
@@ -85,13 +80,14 @@
     flex-direction: row;
     flex-wrap: wrap;
     flex-shrink: 1;
-
-    @if (type-of($row-gutters) == "map") {
-        @include grid-gutter($side: top, $values: $row-gutters, $size: -1);
+    
+    @if(is-valid-map($vertical-gutters)) {
+        @include grid-gutter($side: top, $values: $vertical-gutters, $multiplier: -1);
     }
 
-    .has-rows & {
-        box-shadow: inset 0px 0px 0px 2000px $colour-rows;
+    @if($nested and is-valid-map($horizontal-gutters)) {
+        @include grid-gutter($side: left, $values: $horizontal-gutters, $multiplier: -0.5);
+        @include grid-gutter($side: right, $values: $horizontal-gutters, $multiplier: -0.5);
     }
 }
 
@@ -103,8 +99,8 @@
  */
 @mixin grid-column(
     $width: null,
-    $column-gutters: $column-gutters,
-    $row-gutters: $row-gutters,
+    $horizontal-gutters: $horizontal-gutters,
+    $vertical-gutters: $vertical-gutters,
     $gutter-left: 0.5,
     $gutter-right: 0.5,
     $gutter-top: 1,
@@ -121,40 +117,40 @@
         width: percentage($width);
     }
 
-    @if (type-of($column-gutters) == "map") {
+    @if (is-valid-map($horizontal-gutters)) {
         @include grid-gutter(
             $side: left,
-            $values: $column-gutters,
-            $size: $gutter-left
+            $values: $horizontal-gutters,
+            $multiplier: $gutter-left
         );
         @include grid-gutter(
             $side: right,
-            $values: $column-gutters,
-            $size: $gutter-right
+            $values: $horizontal-gutters,
+            $multiplier: $gutter-right
         );
     }
 
-    @if (type-of($row-gutters) == "map") {
+    @if (is-valid-map($vertical-gutters)) {
         @include grid-gutter(
             $side: top,
-            $values: $row-gutters,
-            $size: $gutter-top
+            $values: $vertical-gutters,
+            $multiplier: $gutter-top
         );
         @include grid-gutter(
             $side: bottom,
-            $values: $row-gutters,
-            $size: $gutter-bottom
+            $values: $vertical-gutters,
+            $multiplier: $gutter-bottom
         );
     }
 
-    @if ($spill-left and type-of($container-padding-left) == "map") {
+    @if ($spill-left and is-valid-map($container-padding-left)) {
         @include grid-column-spill(
             $direction: left,
             $distance: $container-padding-left
         );
     }
 
-    @if ($spill-right and type-of($container-padding-right) == "map") {
+    @if ($spill-right and is-valid-map($container-padding-right)) {
         @include grid-column-spill(
             $direction: right,
             $distance: $container-padding-right
@@ -170,7 +166,7 @@
     }
 
     .has-blocks & > * {
-        box-shadow: inset 0px 0px 0px 2000px $colour-blocks;
+        box-shadow: inset 0px 0px 0px 4000px $colour-blocks;
     }
 }
 
@@ -179,21 +175,21 @@
  * This forms the core of the mixins below.
  *
  * Usage:
- * @include grid-gutter($side: top, $size: 1);
+ * @include grid-gutter($side: top, $multiplier: 1);
  */
-@mixin grid-gutter($side, $values: null, $size: 0.5) {
-    @if (type-of($values) != "map") {
-        @error ('Grid gutters must be an array.');
+@mixin grid-gutter($side, $values: null, $multiplier: 0.5) {
+    @if (not is-valid-map($values)) {
+        @error ('Grid gutters must be a map.');
     }
 
-    $padding-or-margin: if($size < 0, "margin", "padding");
+    $padding-or-margin: if($multiplier < 0, "margin", "padding");
 
     $property: "#{$padding-or-margin}-#{$side}";
 
     @include fluid-property-map(
         $property: $property,
         $values: $values,
-        $size: $size
+        $multiplier: $multiplier
     );
 }
 
@@ -218,25 +214,27 @@
         @error ('Direction must be left, right, top or bottom.');
     }
 
+    // TODO if container-padding-left doesn't have same ids as container-padding-right, throw error
+
     position: relative;
 
     @include fluid-property-map(
         $property: #{$direction},
         $values: $distance,
-        $size: -1
+        $multiplier: -1
     );
 
     > * {
         @include fluid-property-map(
             "margin-#{$opposite}",
             $values: $distance,
-            $size: -1
+            $multiplier: -1
         );
     }
 }
 
 @mixin grid-overlay {
-    @include grid-container($default-column-width: 1/24);
+    @include grid-container($default-column-width: $overlay-column-width);
 
     position: fixed;
     top: 0;
@@ -256,6 +254,10 @@
         margin-top: 0;
     }
 
+    &__column {
+        padding-top: 0;
+    }
+
     &__column:after {
         display: block;
         content: "";
@@ -266,8 +268,38 @@
         height: 100vh;
         background-color: $colour-columns;
 
-        @if (type-of($column-gutters) != "map") {
-            border-right: 1px solid rgba($colour-columns, 0.75);
+        @if (not is-valid-map($horizontal-gutters)) {
+            border-right: 1px solid $colour-columns;
         }
+    }
+}
+
+@mixin grid-column-to-property($property, $width) {
+    $widths: ();
+
+    @each $key, $left-value in $container-padding-left {
+        $right-value: map-get($container-padding-right, $key);
+        $breakpoint: map-get($breakpoints, $key);
+        $calculated-width: ($breakpoint - $left-value - $right-value) * $width;
+
+        $widths: map-merge($widths, ($key: $calculated-width));
+    }
+
+    @include fluid-property-map($property, $widths);
+}
+
+@function is-valid-map($map) {
+    @return type-of($map) == "map" and length($map) > 0;
+}
+
+// Check variables
+
+@each $key, $value in map-merge($container-padding-left, $container-padding-right) {
+    @if(not map-has-key($container-padding-left, $key) or not map-has-key($container-padding-right, $key)) {
+        @error('The breakpoint IDs in $container-padding-left and $container-padding-left do not match.');
+    }
+
+    @if(not map-has-key($breakpoints, $key)) {
+        @error('The breakpoint \'#{$key}\' exists in $container-padding-left or $container-padding-right, but not in $breakpoints.');
     }
 }

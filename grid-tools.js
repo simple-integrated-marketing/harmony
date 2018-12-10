@@ -4,13 +4,11 @@
 
 const html = document.querySelector('html');
 
-const classHasRows = 'has-rows';
 const classHasBlocks = 'has-blocks';
 const classHasNameGuides = 'has-guides';
 const classHasNameGrid = 'has-grid';
 
 document.addEventListener('keypress', event => {
-    (event.ctrlKey && event.key === 'u') && html.classList.toggle(classHasRows);
     (event.ctrlKey && event.key === 'i') && html.classList.toggle(classHasBlocks);
     (event.ctrlKey && event.key === 'o') && html.classList.toggle(classHasNameGuides);
     (event.ctrlKey && event.key === 'p') && html.classList.toggle(classHasNameGrid);

@@ -17,7 +17,7 @@
     $max-breakpoint,
     $applyBelow: true,
     $applyAbove: true,
-    $size: 1
+    $multiplier: 1
 ) {
     @if (not unitless($min-breakpoint)) {
         @error '$min-breakpoint must be unitless.';
@@ -37,100 +37,21 @@
     // If $applyBelow is true, the lower value will also apply below the $min-breakpoint breakpoint.
     @if $applyBelow {
         @media (max-width: #{$min-breakpoint}) {
-            #{$property}: calc(#{$min-value} * #{$size});
+            #{$property}: calc(#{$min-value} * #{$multiplier});
         }
     }
 
     // If $applyAbove is true, the higher value will also apply above the $max-breakpoint breakpoint.
     @if $applyAbove {
         @media (min-width: #{$max-breakpoint}) {
-            #{$property}: calc(#{$max-value} * #{$size});
+            #{$property}: calc(#{$max-value} * #{$multiplier});
         }
     }
 
     // Apply the tween calculation from the $min-breakpoint to $max-breakpoint breakpoints.
     @media (min-width: #{$min-breakpoint}) and (max-width: #{$max-breakpoint}) {
-        #{$property}: calc((#{$difference} + #{$adder}) * #{$size});
+        #{$property}: calc((#{$difference} + #{$adder}) * #{$multiplier});
     }
-}
-
-// =============================================================================
-// Responsive helpers
-// =============================================================================
-
-/**
- * Fluid Property Helper
- * Article: https://bit.ly/2MaHaXb
-
- * Basic font scale:
- * .component { @include fp(font-size, 12, 24); }
- *
- * Width scale with custom breakpoint min/max:
- * .component { @include fp(width, 12, 24, $small, $medium); }
- *
- * Or define a non-linear scale:
- * .component {
- *   @include fp(font-size, 10, 200, $small, $medium, $remove-end: true);
- *   @include fp(font-size, 20, 300, $medium, $large, $remove-start: true, $remove-end: true);
- *   @include fp(font-size, 30, 400, $large, $max, $remove-start: true);
- * }
- */
- @mixin fp($property, $min-value, $max-value, $start-breakpoint: $small, $end-breakpoint: $max, $source-unit: vw, $output-unit: px, $remove-start: false, $remove-end: false, $size: 1) {
-
-	$min-value: strip-unit($min-value);
-	$max-value: strip-unit($max-value);
-	$start-breakpoint: strip-unit($start-breakpoint);
-	$end-breakpoint: strip-unit($end-breakpoint);
-
-	$multiplier: ($max-value - $min-value) / ($end-breakpoint - $start-breakpoint) * 100;
-	$adder: ($min-value * $end-breakpoint - $max-value * $start-breakpoint) / ($end-breakpoint - $start-breakpoint);
-
-    $formula: calc((#{$multiplier + $source-unit} + #{$adder + 0+$output-unit}) * #{$size});
-
-	// Start
-	// Capped from just before $start-breakpoint
-	// Fluid from $start-breakpoint to just before $end-breakpoint
-	@if ($remove-end) and not ($remove-start) {
-		@media (max-width: #{$start-breakpoint - 1px}) {
-            #{$property}: (#{$min-value} + 0#{$output-unit}) * #{$size};
-		}
-		@media (min-width: #{$start-breakpoint + 0px}) and (max-width: #{$end-breakpoint - 1px}) {
-			#{$property}: $formula;
-		}
-
-	// Middle stretch
-	// Fluid from $start-breakpoint to just before $end-breakpoint
-	} @else if ($remove-start) and ($remove-end) {
-		@media (min-width: #{$start-breakpoint + 0px}) and (max-width: #{$end-breakpoint - 1px}) {
-			#{$property}: $formula;
-		}
-
-	// End
-	// Fluid from $start-breakpoint to just before $end-breakpoint
-	// Capped from $end-breakpoint
-	} @else if ($remove-start) and not ($remove-end) {
-		@media (min-width: #{$start-breakpoint + 0px}) and (max-width: #{$end-breakpoint - 1px}) {
-			#{$property}: $formula;
-		}
-		@media (min-width: #{$end-breakpoint + 0px}) {
-            #{$property}: (#{$max-value} + 0#{$output-unit}) * #{$size};
-		}
-
-	// Full stretch
-	// Capped from just before $start-breakpoint
-	// Fluid from $start-breakpoint to just before $end-breakpoint
-	// Capped from $end-breakpoint
-	} @else {
-		@media (max-width: #{$start-breakpoint - 1px}) {
-			#{$property}: $min-value + 0#{$output-unit};
-		}
-		@media (min-width: #{$start-breakpoint + 0px}) and (max-width: #{$end-breakpoint - 1px}) {
-			#{$property}: $formula;
-		}
-		@media (min-width: #{$end-breakpoint + 0px}) {
-			#{$property}: $max-value + 0#{$output-unit};
-		}
-	}
 }
 
 /*
@@ -142,7 +63,7 @@
 @mixin fluid-property-map(
     $property: null,
     $values: null,
-    $size: 1,
+    $multiplier: 1,
     $breakpoints: $breakpoints
 ) {
     $selected-breakpoint-ids: map-keys($values);
@@ -189,9 +110,7 @@
             $max-breakpoint: $max-breakpoint,
             $applyAbove: $is-last,
             $applyBelow: $is-first,
-            $size: $size
+            $multiplier: $multiplier
         );
-
-        // @include fp($property: $property, $min-value: $min-value, $max-value: $max-value, $start-breakpoint: $min-breakpoint, $end-breakpoint: $max-breakpoint, $remove-start: not $is-first, $remove-end: not $is-last, $size: $size);
     }
 }

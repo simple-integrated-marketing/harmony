@@ -18,12 +18,12 @@ $container-padding-right: $container-padding-left;
 $container-padding-top: null;
 $container-padding-bottom: null;
 
-$column-gutters: (
+$horizontal-gutters: (
     min: 8px,
     xxxl: 16px
 );
 
-$row-gutters: $column-gutters;
+$vertical-gutters: $horizontal-gutters;
 
 $font-sizes: (
     min: 12px,

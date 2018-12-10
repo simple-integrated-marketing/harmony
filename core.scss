@@ -2,13 +2,14 @@
 // It's the primary entry point for the library.
 
 @import "./defaults";
-@import "./grid";
 
 @import "./utilities/strip-unit";
 @import "./utilities/child-fill-parent";
 @import "./utilities/aspect-ratio";
 @import "./utilities/fluid-property";
 @import "./utilities/typeset";
+
+@import "./grid";
 
 @import "./root-font-size";
 @import "./grid-overlay";
