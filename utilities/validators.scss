@@ -1,0 +1,24 @@
+@function map-is-valid($map) {
+    @return type-of($map) == "map" and length($map) > 0;
+}
+
+@function maps-have-same-keys($map1, $map2) {
+    @if(not map-has-keys-in-other-map($map1, $map2)) {
+        @return false;
+    }
+
+    @if(not map-has-keys-in-other-map($map2, $map1)) {
+        @return false;
+    }
+
+    @return true;
+}
+
+@function map-corresponds-to-keys-in-other-map($map1, $map2) {
+    @each $key, $value in $map1 {
+        @if(not map-has-key($map2, $key)) {
+            @return false;
+        }
+    }
+    @return true;
+}

@@ -1,3 +1,7 @@
+@import "./utilities/validators";
+@import "./utilities/map-operators";
+@import "./utilities/strip-unit";
+
 // =============================================================================
 // Grid
 // =============================================================================
@@ -15,29 +19,29 @@
 ) {
     width: 100%; // Prevents collapse when flex parent
     position: relative;
-
-    @if (is-valid-map($container-padding-left)) {
+    
+    @if (map-is-valid($container-padding-left)) {
         @include fluid-property-map(
             $property: "padding-left",
             $values: $container-padding-left
         );
     }
 
-    @if (is-valid-map($container-padding-right)) {
+    @if (map-is-valid($container-padding-right)) {
         @include fluid-property-map(
             $property: "padding-right",
             $values: $container-padding-right
         );
     }
 
-    @if (is-valid-map($container-padding-top)) {
+    @if (map-is-valid($container-padding-top)) {
         @include fluid-property-map(
             $property: "padding-top",
             $values: $container-padding-top
         );
     }
 
-    @if (is-valid-map($container-padding-bottom)) {
+    @if (map-is-valid($container-padding-bottom)) {
         @include fluid-property-map(
             $property: "padding-bottom",
             $values: $container-padding-bottom
@@ -81,11 +85,11 @@
     flex-wrap: wrap;
     flex-shrink: 1;
     
-    @if(is-valid-map($vertical-gutters)) {
+    @if(map-is-valid($vertical-gutters)) {
         @include grid-gutter($side: top, $multiplier: -1);
     }
 
-    @if($nested and is-valid-map($horizontal-gutters)) {
+    @if($nested and map-is-valid($horizontal-gutters)) {
         @include grid-gutter($side: left, $multiplier: -0.5);
         @include grid-gutter($side: right, $multiplier: -0.5);
     }
@@ -117,7 +121,7 @@
         width: percentage($width);
     }
 
-    @if (is-valid-map($horizontal-gutters)) {
+    @if (map-is-valid($horizontal-gutters)) {
         @include grid-gutter(
             $side: left,
             $multiplier: $gutter-left
@@ -128,7 +132,7 @@
         );
     }
 
-    @if (is-valid-map($vertical-gutters)) {
+    @if (map-is-valid($vertical-gutters)) {
         @include grid-gutter(
             $side: top,
             $multiplier: $gutter-top
@@ -139,14 +143,14 @@
         );
     }
 
-    @if ($spill-left and is-valid-map($container-padding-left)) {
+    @if ($spill-left and map-is-valid($container-padding-left)) {
         @include grid-column-spill(
             $direction: left,
             $distance: $container-padding-left
         );
     }
 
-    @if ($spill-right and is-valid-map($container-padding-right)) {
+    @if ($spill-right and map-is-valid($container-padding-right)) {
         @include grid-column-spill(
             $direction: right,
             $distance: $container-padding-right
@@ -182,7 +186,7 @@
         $values: $vertical-gutters;
     }
 
-    @if (not is-valid-map($values)) {
+    @if (not map-is-valid($values)) {
         @error ('Grid gutters must be a map.');
     }
 
@@ -190,10 +194,11 @@
 
     $property: "#{$padding-or-margin}-#{$side}";
 
+    $values: map-multiply($values, 0.5);
+
     @include fluid-property-map(
         $property: $property,
-        $values: $values,
-        $multiplier: $multiplier
+        $values: $values
     );
 }
 
@@ -277,7 +282,7 @@
         height: 100vh;
         background-color: $colour-columns;
 
-        @if (not is-valid-map($horizontal-gutters)) {
+        @if (not map-is-valid($horizontal-gutters)) {
             border-right: 1px solid $colour-columns;
         }
     }
@@ -297,18 +302,16 @@
     @include fluid-property-map($property, $widths);
 }
 
-@function is-valid-map($map) {
-    @return type-of($map) == "map" and length($map) > 0;
-}
-
 // Check variables
 
-@each $key, $value in map-merge($container-padding-left, $container-padding-right) {
-    @if(not map-has-key($container-padding-left, $key) or not map-has-key($container-padding-right, $key)) {
-        @error('The breakpoint IDs in $container-padding-left and $container-padding-left do not match.');
-    }
+@if(not map-corresponds-to-keys-in-other-map($container-padding-left, $breakpoints)) {
+    @error('The breakpoint \'#{$key}\' exists in $container-padding-left, but not in $breakpoints.');
+}
 
-    @if(not map-has-key($breakpoints, $key)) {
-        @error('The breakpoint \'#{$key}\' exists in $container-padding-left or $container-padding-right, but not in $breakpoints.');
-    }
+@if(not map-corresponds-to-keys-in-other-map($container-padding-right, $breakpoints)) {
+    @error('The breakpoint \'#{$key}\' exists in $container-padding-right, but not in $breakpoints.');
+}
+
+@if(not maps-have-same-keys($container-padding-left, $container-padding-right)) {
+    @error('The breakpoint IDs in $container-padding-left and $container-padding-left do not match.');
 }
