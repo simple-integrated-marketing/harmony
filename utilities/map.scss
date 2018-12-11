@@ -1,0 +1,57 @@
+// Map Validators
+
+@function map-is-valid($map) {
+    @return type-of($map) == "map" and length($map) > 0;
+}
+
+@function maps-have-same-keys($map1, $map2) {
+    @if(not map-keys-correspond-to-keys-in-other-map($map1, $map2)) {
+        @return false;
+    }
+
+    @if(not map-keys-correspond-to-keys-in-other-map($map2, $map1)) {
+        @return false;
+    }
+
+    @return true;
+}
+
+@function map-keys-correspond-to-keys-in-other-map($map1, $map2) {
+    @each $key, $value in $map1 {
+        @if(not map-has-key($map2, $key)) {
+            @return false;
+        }
+    }
+    @return true;
+}
+
+// Map Operators
+
+@function map-add($map1, $map2) {
+    $output: ();
+
+    @each $key, $value in $map1 {
+        $adder: 0;
+
+        @if(type-of($map2) == "map" and map-has-key($map2, $key)) {
+            $adder: map-get($map2, $key);
+        }
+        
+        $output: map-merge($output, ($key: $value + $adder));
+    }
+    @debug($map1, $map2, $output);
+    @return $output;
+}
+
+@function map-multiply($map, $multiplier) {
+    $output: ();
+
+    @each $key, $value in $map {
+        $output: map-merge($output, ($key: $value * $multiplier));
+    }
+
+    @return $output;
+}
+
+// TODO multiply maps by maps, assert same keys using validator
+// TODO add maps to maps, assert same keys using validator
