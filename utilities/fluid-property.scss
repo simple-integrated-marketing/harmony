@@ -43,13 +43,13 @@
 
     // If $applyAbove is true, the higher value will also apply above the $max-breakpoint breakpoint.
     @if $applyAbove {
-        @media (min-width: #{$max-breakpoint}) {
+        @media (min-width: #{$max-breakpoint - 1}) {
             #{$property}: calc(#{$max-value} * #{$multiplier});
         }
     }
 
     // Apply the tween calculation from the $min-breakpoint to $max-breakpoint breakpoints.
-    @media (min-width: #{$min-breakpoint}) and (max-width: #{$max-breakpoint}) {
+    @media (min-width: #{$min-breakpoint}) and (max-width: #{$max-breakpoint - 1}) {
         #{$property}: calc((#{$difference} + #{$adder}) * #{$multiplier});
     }
 }

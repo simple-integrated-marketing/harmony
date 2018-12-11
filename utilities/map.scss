@@ -1,7 +1,7 @@
 // Map Validators
 
 @function map-is-valid($map) {
-    @return type-of($map) == "map" and length($map) > 0;
+    @return type-of($map) == "map" and length($map) > 1;
 }
 
 @function maps-have-same-keys($map1, $map2) {
@@ -48,6 +48,26 @@
 
     @each $key, $value in $map {
         $output: map-merge($output, ($key: $value * $multiplier));
+    }
+
+    @return $output;
+}
+
+@function map-strip-unit($map) {
+    $output: ();
+
+    @each $key, $value in $map {
+        $output: map-merge($output, ($key: strip-unit($value)));
+    }
+
+    @return $output;
+}
+
+@function map-percentage($map) {
+    $output: ();
+
+    @each $key, $value in $map {
+        $output: map-merge($output, ($key: percentage($value)));
     }
 
     @return $output;

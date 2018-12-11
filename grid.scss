@@ -108,18 +108,15 @@
     $gutter-right: 0.5,
     $gutter-top: 1,
     $gutter-bottom: 0,
-    $spill-right: false,
-    $spill-left: false,
+    $spill-direction: null,
     $margin-left: null,
     $margin-right: null
 ) {
     position: relative;
     min-width: 0;
 
-    @if ($width != null) {
-        width: percentage($width);
-    }
-
+    @include grid-column-width($width);
+    
     @if (map-is-valid($horizontal-gutters)) {
         @include grid-gutter(
             $side: left,
@@ -142,30 +139,44 @@
         );
     }
 
-    @if ($spill-left and map-is-valid($container-padding-left)) {
-        @include grid-column-spill(
-            $direction: left,
-            $distance: $container-padding-left
-        );
+    @if ($spill-direction == left and map-is-valid($container-padding-left)) {
+        @include grid-column-spill(left);
     }
 
-    @if ($spill-right and map-is-valid($container-padding-right)) {
-        @include grid-column-spill(
-            $direction: right,
-            $distance: $container-padding-right
-        );
+    @if ($spill-direction == right and map-is-valid($container-padding-right)) {
+        @include grid-column-spill(right);
     }
 
     @if ($margin-left != null) {
-        margin-left: percentage($margin-left);
+        @include grid-column-margin(left, $margin-left);
     }
 
     @if ($margin-right != null) {
-        margin-right: percentage($margin-right);
+        @include grid-column-margin(right, $margin-right);
     }
 
     .show-block-children & > * {
         box-shadow: inset 0px 0px 0px 4000px $colour-blocks;
+    }
+}
+
+@mixin grid-column-width($width) {
+    @if(map-is-valid($width)) {
+        $width: map-strip-unit($width);
+        $width: map-percentage($width);
+        @include stepped-property-map('width', $width);
+    } @elseif $width != null {
+        width: percentage($width);
+    }
+}
+
+@mixin grid-column-margin($side, $width) {
+    @if(map-is-valid($width)) {
+        $width: map-strip-unit($width);
+        $width: map-percentage($width);
+        @include stepped-property-map('margin-#{$side}', $width);
+    } @elseif $width != null {
+        width: percentage($width);
     }
 }
 
@@ -193,7 +204,7 @@
 
     $property: "#{$padding-or-margin}-#{$side}";
 
-    $values: map-multiply($values, 0.5);
+    $values: map-multiply($values, $multiplier);
 
     @include fluid-property-map(
         $property: $property,
@@ -207,17 +218,22 @@
  * Usage:
  * @include ...
  */
-@mixin grid-column-spill($direction, $distance: null, $gutter: null) {
+@mixin grid-column-spill($direction) {
     $opposite: null;
+    $distance: null;
 
     @if $direction == left {
         $opposite: right;
+        $distance: $container-padding-right;
     } @else if $direction == right {
         $opposite: left;
+        $distance: $container-padding-left;
     } @else if $direction == top {
         $opposite: bottom;
+        $distance: $container-padding-bottom;
     } @else if $direction == bottom {
         $opposite: top;
+        $distance: $container-padding-top;
     } @else {
         @error ('Direction must be left, right, top or bottom.');
     }
@@ -262,13 +278,19 @@
         margin-top: 0;
     }
 
-    &__column:first-child {
-        border-left: 1px solid $colour-columns;
+    &__column:not(:first-child):before {
+        content: '';
+        display: block;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 1px;
+        background-color: $colour-columns;
+        position: absolute;
     }
 
     &__column {
         padding-top: 0;
-        border-right: 1px solid $colour-columns;
     }
 
     &__column:after {
@@ -317,4 +339,8 @@
 
 @if(not maps-have-same-keys($container-padding-left, $horizontal-gutters)) {
     @error('The breakpoint IDs in $container-padding-left and $horizontal-gutters do not match.');
+}
+
+@if(not maps-have-same-keys($container-padding-left, $vertical-gutters)) {
+    @error('The breakpoint IDs in $container-padding-left and $vertical-gutters do not match.');
 }

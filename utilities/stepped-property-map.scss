@@ -1,0 +1,63 @@
+@mixin stepped-property-map($property, $values) {
+    @if ($property == null) {
+        @error 'Property must be specified.';
+    }
+
+    @if (not map-is-valid($values)) {
+        @error 'Value must be specified.';
+    }
+
+    $selected-breakpoint-ids: map-keys($values);
+    $selected-breakpoint-values: map-values($values);
+
+    @for $i from 1 through length($values) - 1 {
+        $is-last: $i == length($values) - 1;
+        $is-first: $i == 1;
+
+        $min-value: nth($selected-breakpoint-values, $i);
+        $max-value: nth($selected-breakpoint-values, $i + 1);
+
+        $max-breakpoint-id: nth($selected-breakpoint-ids, $i + 1);
+        $min-breakpoint-id: nth($selected-breakpoint-ids, $i);
+
+        $min-breakpoint: strip-unit(
+            map-get($breakpoints, $min-breakpoint-id)
+        );
+
+        $max-breakpoint: strip-unit(
+            map-get($breakpoints, $max-breakpoint-id)
+        );
+
+        @debug($min-breakpoint, $min-value);
+        @debug($max-breakpoint, $max-value);
+
+        @if ($max-breakpoint == null) {
+            @error 'The value "#{$max-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
+        }
+
+        @if ($min-breakpoint == null) {
+            @error 'The value "#{$min-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
+        }
+        
+        @debug('#{$property}: #{$min-value}, #{$max-value}, #{$is-last}');
+        
+        @if $is-first {
+            @debug('Below:', '#{$property}: #{$min-value}');
+            @media (max-width: #{$min-breakpoint - 1}px) {
+                #{$property}: $min-value;
+            }
+        }
+        
+        @debug('Current:', '(min-width: #{$min-breakpoint}px) and (max-width: #{$max-breakpoint - 1}px)');
+        @media (min-width: #{$min-breakpoint}px) and (max-width: #{$max-breakpoint - 1}px) {
+            #{$property}: $min-value;
+        }       
+
+        @if $is-last {
+            @debug('Above:', 'min-width: #{$max-breakpoint}');
+            @media (min-width: #{$max-breakpoint}px) {
+                #{$property}: $max-value;
+            }
+        }
+    }
+}
