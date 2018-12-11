@@ -1,5 +1,4 @@
-@import "./utilities/validators";
-@import "./utilities/map-operators";
+@import "./utilities/map";
 @import "./utilities/strip-unit";
 
 // =============================================================================
@@ -302,16 +301,20 @@
     @include fluid-property-map($property, $widths);
 }
 
-// Check variables
+// Validate variables
 
-@if(not map-corresponds-to-keys-in-other-map($container-padding-left, $breakpoints)) {
-    @error('The breakpoint \'#{$key}\' exists in $container-padding-left, but not in $breakpoints.');
+@if(not map-keys-correspond-to-keys-in-other-map($container-padding-left, $breakpoints)) {
+    @error('The breakpoints in $container-padding-left do not all correspond to breakpoints in $breakpoints.');
 }
 
-@if(not map-corresponds-to-keys-in-other-map($container-padding-right, $breakpoints)) {
-    @error('The breakpoint \'#{$key}\' exists in $container-padding-right, but not in $breakpoints.');
+@if(not map-keys-correspond-to-keys-in-other-map($container-padding-right, $breakpoints)) {
+    @error('The breakpoints in $container-padding-right do not all correspond to breakpoints in $breakpoints.');
 }
 
 @if(not maps-have-same-keys($container-padding-left, $container-padding-right)) {
     @error('The breakpoint IDs in $container-padding-left and $container-padding-left do not match.');
+}
+
+@if(not maps-have-same-keys($container-padding-left, $horizontal-gutters)) {
+    @error('The breakpoint IDs in $container-padding-left and $horizontal-gutters do not match.');
 }
