@@ -28,9 +28,6 @@
             map-get($breakpoints, $max-breakpoint-id)
         );
 
-        @debug($min-breakpoint, $min-value);
-        @debug($max-breakpoint, $max-value);
-
         @if ($max-breakpoint == null) {
             @error 'The value "#{$max-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
         }
@@ -39,22 +36,17 @@
             @error 'The value "#{$min-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
         }
         
-        @debug('#{$property}: #{$min-value}, #{$max-value}, #{$is-last}');
-        
         @if $is-first {
-            @debug('Below:', '#{$property}: #{$min-value}');
             @media (max-width: #{$min-breakpoint - 1}px) {
                 #{$property}: $min-value;
             }
         }
         
-        @debug('Current:', '(min-width: #{$min-breakpoint}px) and (max-width: #{$max-breakpoint - 1}px)');
         @media (min-width: #{$min-breakpoint}px) and (max-width: #{$max-breakpoint - 1}px) {
             #{$property}: $min-value;
         }       
 
         @if $is-last {
-            @debug('Above:', 'min-width: #{$max-breakpoint}');
             @media (min-width: #{$max-breakpoint}px) {
                 #{$property}: $max-value;
             }
