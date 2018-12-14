@@ -15,13 +15,13 @@ $breakpoints: (
 ) !default;
 
 // Whats this do?
-$container-padding-left: (
+$grid-container-padding-left: (
     min: 16px,
     xxxl: 400px
 ) !default;
 
 // Whats this do?
-$container-padding-right: $container-padding-left !default;
+$grid-container-padding-right: $grid-container-padding-left !default;
 
 // Whats this do?
 $horizontal-gutters: (

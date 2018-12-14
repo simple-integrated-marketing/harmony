@@ -36,17 +36,17 @@
 }
 
 @mixin grid-container-padding {
-    @if (map-is-valid($container-padding-left)) {
+    @if (map-is-valid($grid-container-padding-left)) {
         @include fluid-property-map(
             $property: "padding-left",
-            $values: $container-padding-left
+            $values: $grid-container-padding-left
         );
     }
 
-    @if (map-is-valid($container-padding-right)) {
+    @if (map-is-valid($grid-container-padding-right)) {
         @include fluid-property-map(
             $property: "padding-right",
-            $values: $container-padding-right
+            $values: $grid-container-padding-right
         );
     }
 }
@@ -210,12 +210,12 @@
         @error('Invalid spill direction value: #{$direction}');
     }
 
-    @if $direction == left and not map-is-valid($container-padding-left) {
-        @error('$container-padding-left must be set in order to spill a column to the left.');
+    @if $direction == left and not map-is-valid($grid-container-padding-left) {
+        @error('$grid-container-padding-left must be set in order to spill a column to the left.');
     }
 
-    @if $direction == right and not map-is-valid($container-padding-right) {
-        @error('$container-padding-right must be set in order to spill a column to the right.');
+    @if $direction == right and not map-is-valid($grid-container-padding-right) {
+        @error('$grid-container-padding-right must be set in order to spill a column to the right.');
     }
 
     $opposite: null;
@@ -223,10 +223,10 @@
 
     @if $direction == left {
         $opposite: right;
-        $distance: $container-padding-right;
+        $distance: $grid-container-padding-right;
     } @else if $direction == right {
         $opposite: left;
-        $distance: $container-padding-left;
+        $distance: $grid-container-padding-left;
     } @else {
         @error ('Direction must be left or right.');
     }
@@ -305,8 +305,8 @@
 @mixin grid-column-to-property($property, $width) {
     $widths: ();
 
-    @each $key, $left-value in $container-padding-left {
-        $right-value: map-get($container-padding-right, $key);
+    @each $key, $left-value in $grid-container-padding-left {
+        $right-value: map-get($grid-container-padding-right, $key);
         $breakpoint: map-get($breakpoints, $key);
         $calculated-width: ($breakpoint - $left-value - $right-value) * $width;
 
@@ -318,22 +318,22 @@
 
 // Validate variables
 
-@if(not map-keys-correspond-to-keys-in-other-map($container-padding-left, $breakpoints)) {
-    @error('The breakpoints in $container-padding-left do not all correspond to breakpoints in $breakpoints.');
+@if(not map-keys-correspond-to-keys-in-other-map($grid-container-padding-left, $breakpoints)) {
+    @error('The breakpoints in $grid-container-padding-left do not all correspond to breakpoints in $breakpoints.');
 }
 
-@if(not map-keys-correspond-to-keys-in-other-map($container-padding-right, $breakpoints)) {
-    @error('The breakpoints in $container-padding-right do not all correspond to breakpoints in $breakpoints.');
+@if(not map-keys-correspond-to-keys-in-other-map($grid-container-padding-right, $breakpoints)) {
+    @error('The breakpoints in $grid-container-padding-right do not all correspond to breakpoints in $breakpoints.');
 }
 
-@if(not maps-have-same-keys($container-padding-left, $container-padding-right)) {
-    @error('The breakpoint IDs in $container-padding-left and $container-padding-left do not match.');
+@if(not maps-have-same-keys($grid-container-padding-left, $grid-container-padding-right)) {
+    @error('The breakpoint IDs in $grid-container-padding-left and $grid-container-padding-left do not match.');
 }
 
-@if(not maps-have-same-keys($container-padding-left, $horizontal-gutters)) {
-    @error('The breakpoint IDs in $container-padding-left and $horizontal-gutters do not match.');
+@if(not maps-have-same-keys($grid-container-padding-left, $horizontal-gutters)) {
+    @error('The breakpoint IDs in $grid-container-padding-left and $horizontal-gutters do not match.');
 }
 
-@if(not maps-have-same-keys($container-padding-left, $vertical-gutters)) {
-    @error('The breakpoint IDs in $container-padding-left and $vertical-gutters do not match.');
+@if(not maps-have-same-keys($grid-container-padding-left, $vertical-gutters)) {
+    @error('The breakpoint IDs in $grid-container-padding-left and $vertical-gutters do not match.');
 }
