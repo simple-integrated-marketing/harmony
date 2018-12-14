@@ -25,6 +25,14 @@
     @return true;
 }
 
+@function validate-property-map($map) {
+    @if(not map-keys-correspond-to-keys-in-other-map($map, $breakpoints)) {
+        @error '#{$map} must be a valid property map whose keys correspond to keys in $breakpoints #{map-keys($breakpoints)}.';
+    }
+
+    @return true;
+}
+
 // Map Operators
 
 @function map-add($map1, $map2) {
@@ -39,7 +47,7 @@
         
         $output: map-merge($output, ($key: $value + $adder));
     }
-    @debug($map1, $map2, $output);
+    
     @return $output;
 }
 

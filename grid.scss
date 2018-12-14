@@ -18,7 +18,7 @@
 ) {
     width: 100%; // Prevents collapse when flex parent
     position: relative;
-    
+
     @if (map-is-valid($container-padding-left)) {
         @include fluid-property-map(
             $property: "padding-left",
@@ -32,21 +32,7 @@
             $values: $container-padding-right
         );
     }
-
-    @if (map-is-valid($container-padding-top)) {
-        @include fluid-property-map(
-            $property: "padding-top",
-            $values: $container-padding-top
-        );
-    }
-
-    @if (map-is-valid($container-padding-bottom)) {
-        @include fluid-property-map(
-            $property: "padding-bottom",
-            $values: $container-padding-bottom
-        );
-    }
-
+    
     &__row {
         @include grid-row(
             $vertical-gutters: $vertical-gutters,
@@ -164,9 +150,13 @@
     @if(map-is-valid($width)) {
         $width: map-strip-unit($width);
         $width: map-percentage($width);
-        @include stepped-property-map('width', $width);
-    } @elseif $width != null {
+        @include property-map('width', $width);
+    } @elseif type-of($width) == "number" {
         width: percentage($width);
+    } @elseif $width == null {
+
+    } @else {
+        @debug('Column width must be a map or a number.')
     }
 }
 
@@ -174,9 +164,11 @@
     @if(map-is-valid($width)) {
         $width: map-strip-unit($width);
         $width: map-percentage($width);
-        @include stepped-property-map('margin-#{$side}', $width);
-    } @elseif $width != null {
+        @include property-map('margin-#{$side}', $width);
+    } @elseif type-of($width) == "number" {
         width: percentage($width);
+    } @else {
+        @debug('Column margin width must be a map or a number.')
     }
 }
 
@@ -228,14 +220,8 @@
     } @else if $direction == right {
         $opposite: left;
         $distance: $container-padding-left;
-    } @else if $direction == top {
-        $opposite: bottom;
-        $distance: $container-padding-bottom;
-    } @else if $direction == bottom {
-        $opposite: top;
-        $distance: $container-padding-top;
     } @else {
-        @error ('Direction must be left, right, top or bottom.');
+        @error ('Direction must be left or right.');
     }
 
     // TODO if container-padding-left doesn't have same ids as container-padding-right, throw error

@@ -1,11 +1,11 @@
-@mixin stepped-property-map($property, $values) {
+@import "./utilities/map";
+
+@mixin property-map($property, $values) {
     @if ($property == null) {
         @error 'Property must be specified.';
     }
 
-    @if (not map-is-valid($values)) {
-        @error 'Value must be specified.';
-    }
+    $test: validate-property-map($values);
 
     $selected-breakpoint-ids: map-keys($values);
     $selected-breakpoint-values: map-values($values);
