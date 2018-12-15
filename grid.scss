@@ -63,14 +63,9 @@
 ) {
     display: flex;
     position: relative;
-    // width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
-    flex-shrink: 1;
 
-    // margin-left: -5rem;
-    // margin-right: -5rem;
-    
     @if(is-valid-property-map($vertical-gutters)) {
         @include grid-gutter($side: top, $multiplier: -1);
     }
@@ -115,7 +110,7 @@
         @include grid-column-margin(right, $margin-right);
     }
 
-    .show-block-children & > * {
+    .show-block-children & {
         box-shadow: inset 0px 0px 0px 4000px $colour-blocks;
     }
 }
@@ -311,6 +306,9 @@
 
     &__column {
         padding-top: 0;
+        .show-block-children & {
+            box-shadow: none !important;
+        }
     }
 
     &__column:after {
