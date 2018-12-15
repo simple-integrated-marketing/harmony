@@ -1,7 +1,10 @@
 // Map Validators
 
-@function map-is-valid($map) {
-    @return type-of($map) == "map" and length($map) > 1;
+@function is-valid-property-map($map) {
+    @return
+        type-of($map) == "map" and
+        length($map) > 0 and
+        map-keys-correspond-to-keys-in-other-map($map, $breakpoints);
 }
 
 @function maps-have-same-keys($map1, $map2) {
@@ -26,7 +29,7 @@
 }
 
 @function validate-property-map($map) {
-    @if(not map-keys-correspond-to-keys-in-other-map($map, $breakpoints)) {
+    @if(not is-valid-property-map($map)) {
         @error '#{$map} must be a valid property map whose keys correspond to keys in $breakpoints #{map-keys($breakpoints)}.';
     }
 
@@ -38,14 +41,26 @@
 @function map-add($map1, $map2) {
     $output: ();
 
-    @each $key, $value in $map1 {
-        $adder: 0;
+    @if(not maps-have-same-keys($map1, $map2)) {
+        @error('In order to perform an add operation on two maps, both must have the same set of keys.');
+    }
 
-        @if(type-of($map2) == "map" and map-has-key($map2, $key)) {
-            $adder: map-get($map2, $key);
-        }
-        
-        $output: map-merge($output, ($key: $value + $adder));
+    @each $key, $value in $map1 {
+        $output: map-merge($output, ($key: $value + map-get($map2, $key)));
+    }
+    
+    @return $output;
+}
+
+@function map-subtract($map1, $map2) {
+    $output: ();
+
+    @if(not maps-have-same-keys($map1, $map2)) {
+        @error('In order to perform an add operation on two maps, both must have the same set of keys.');
+    }
+    
+    @each $key, $value in $map1 {
+        $output: map-merge($output, ($key: $value - map-get($map2, $key)));
     }
     
     @return $output;

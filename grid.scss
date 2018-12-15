@@ -36,14 +36,14 @@
 }
 
 @mixin grid-container-padding {
-    @if (map-is-valid($grid-container-padding-left)) {
+    @if (is-valid-property-map($grid-container-padding-left)) {
         @include fluid-property-map(
             $property: "padding-left",
             $values: $grid-container-padding-left
         );
     }
 
-    @if (map-is-valid($grid-container-padding-right)) {
+    @if (is-valid-property-map($grid-container-padding-right)) {
         @include fluid-property-map(
             $property: "padding-right",
             $values: $grid-container-padding-right
@@ -63,16 +63,19 @@
 ) {
     display: flex;
     position: relative;
-    width: 100%;
+    // width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
     flex-shrink: 1;
+
+    // margin-left: -5rem;
+    // margin-right: -5rem;
     
-    @if(map-is-valid($vertical-gutters)) {
+    @if(is-valid-property-map($vertical-gutters)) {
         @include grid-gutter($side: top, $multiplier: -1);
     }
 
-    @if($nested and map-is-valid($horizontal-gutters)) {
+    @if(is-valid-property-map($horizontal-gutters)) {
         @include grid-gutter($side: left, $multiplier: -0.5);
         @include grid-gutter($side: right, $multiplier: -0.5);
     }
@@ -118,7 +121,7 @@
 }
 
 @mixin grid-column-gutters($top-multiplier, $bottom-multiplier, $left-multiplier, $right-multiplier) {
-    @if (map-is-valid($horizontal-gutters)) {
+    @if (is-valid-property-map($horizontal-gutters)) {
         @include grid-gutter(
             $side: left,
             $multiplier: $left-multiplier
@@ -129,7 +132,7 @@
         );
     }
 
-    @if (map-is-valid($vertical-gutters)) {
+    @if (is-valid-property-map($vertical-gutters)) {
         @include grid-gutter(
             $side: top,
             $multiplier: $top-multiplier
@@ -142,7 +145,7 @@
 }
 
 @mixin grid-column-width($width) {
-    @if(map-is-valid($width)) {
+    @if(is-valid-property-map($width)) {
         $width: map-strip-unit($width);
         $width: map-percentage($width);
         @include property-map('width', $width);
@@ -156,7 +159,7 @@
 }
 
 @mixin grid-column-margin($side, $width) {
-    @if(map-is-valid($width)) {
+    @if(is-valid-property-map($width)) {
         $width: map-strip-unit($width);
         $width: map-percentage($width);
         @include property-map('margin-#{$side}', $width);
@@ -183,7 +186,7 @@
         $values: $vertical-gutters;
     }
 
-    @if (not map-is-valid($values)) {
+    @if (not is-valid-property-map($values)) {
         @error ('Grid gutters must be a map.');
     }
 
@@ -210,29 +213,22 @@
         @error('Invalid spill direction value: #{$direction}');
     }
 
-    @if $direction == left and not map-is-valid($grid-container-padding-left) {
+    @if $direction == left and not is-valid-property-map($grid-container-padding-left) {
         @error('$grid-container-padding-left must be set in order to spill a column to the left.');
     }
 
-    @if $direction == right and not map-is-valid($grid-container-padding-right) {
+    @if $direction == right and not is-valid-property-map($grid-container-padding-right) {
         @error('$grid-container-padding-right must be set in order to spill a column to the right.');
     }
 
-    $opposite: null;
-    $distance: null;
+    $opposite: get-opposite-direction($direction);
+    $padding: if($direction == left, $grid-container-padding-left, $grid-container-padding-right);
+    $gutters: map-multiply($horizontal-gutters, 0.5);
+    $distance: map-subtract($padding, $gutters);
+    // $distance: $padding;
 
-    @if $direction == left {
-        $opposite: right;
-        $distance: $grid-container-padding-right;
-    } @else if $direction == right {
-        $opposite: left;
-        $distance: $grid-container-padding-left;
-    } @else {
-        @error ('Direction must be left or right.');
-    }
-
-    // TODO if container-padding-left doesn't have same ids as container-padding-right, throw error
-
+    // $distance-minus-padding: map-subtract($padding, $horizontal-gutters);
+    
     position: relative;
 
     @include fluid-property-map(
@@ -247,6 +243,37 @@
             $values: $distance,
             $multiplier: -1
         );
+    }
+}
+
+@function get-opposite-direction($direction) {
+    @if($direction == left) {
+        @return right;
+    } @else if($direction == right) {
+        @return left;
+    } @else if($direction == top) {
+        @return bottom;
+    } @else if($direction == bottom) {
+        @return top;
+    } @else {
+        @error('Invalid direction: #{$direction}');
+    }
+}
+
+@mixin grid-column-spill-inset-contents($direction) {
+    // Make this into a function; is used also in grid-column-spill
+    @if ($direction != left and $direction != right) {
+        @error('Invalid spill direction value: #{$direction}');
+    }
+
+    $padding: if($direction == left, $grid-container-padding-left, $grid-container-padding-right);
+    $gutters: map-multiply($horizontal-gutters, 0.5);
+    $distance: map-subtract($padding, $gutters);
+
+    @if($direction == left) {
+        @include fluid-property-map('padding-left', $distance);
+    } @else if($direction == right) {
+        @include fluid-property-map('padding-right', $distance);
     }
 }
 
@@ -296,7 +323,7 @@
         height: 100vh;
         background-color: $colour-columns;
 
-        @if (not map-is-valid($horizontal-gutters)) {
+        @if (not is-valid-property-map($horizontal-gutters)) {
             border-right: 1px solid $colour-columns;
         }
     }
@@ -332,8 +359,4 @@
 
 @if(not maps-have-same-keys($grid-container-padding-left, $horizontal-gutters)) {
     @error('The breakpoint IDs in $grid-container-padding-left and $horizontal-gutters do not match.');
-}
-
-@if(not maps-have-same-keys($grid-container-padding-left, $vertical-gutters)) {
-    @error('The breakpoint IDs in $grid-container-padding-left and $vertical-gutters do not match.');
 }

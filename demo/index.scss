@@ -370,26 +370,30 @@ body > * {
 .two-column-spill-with-content-constrained-to-grid-demo {
     @include grid-container($default-column-width: 1/2);
 
-    &__column > * {
-        background-image: url('https://via.placeholder.com/1200/222222/?text=');
+    &__background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: -1;
+
+        background-image: url('https://via.placeholder.com/1200/222222');
+        background-position: center;
+        background-size: cover;
     }
 
-    &__column > * > * {
+    &__column > * {
         @include wysiwyg;
     }
 
     // TODO fix -- more complex
         
     &__column:nth-child(odd) {
-        @include grid-column($width: 1/2, $spill-direction: left, $gutter-left: 0);
+        @include grid-column($width: 1/2, $spill-direction: left);
         
         & > * {
-            @include fluid-property-map('padding-left', $grid-container-padding-left);
-            // background-image: url('https://via.placeholder.com/1200/222222/?text=');
-
-            & > * {
-                @include grid-gutter($side: left);
-            }
+            @include grid-column-spill-inset-contents(left);
         }
     }
 
