@@ -10,18 +10,18 @@ $breakpoints: (
 );
 
 $grid-container-padding-left: (
-    sm: 32px,
-    xxxl: 400px
+    sm: 16px,
+    xxxl: 320px
 );
 
 $grid-container-padding-right: $grid-container-padding-left;
 
 $horizontal-gutters: (
     sm: 8px,
-    xxxl: 16px
+    xxxl: 48px
 );
 
-$vertical-gutters: ();
+$vertical-gutters: $horizontal-gutters;
 
 $font-sizes: (
     min: 12px,
@@ -31,3 +31,5 @@ $font-sizes: (
 $cap-heights: (
     Roboto: 0.7
 );
+
+$overlay-columns: 24;

@@ -13,7 +13,7 @@ body {
 }
 
 body > * {
-    margin-bottom: 4rem;
+    // margin-bottom: 8rem;
 }
 
 .demo-title {
@@ -47,28 +47,32 @@ body > * {
 // CONSTRAINED
 
 .one-column-demo {
-    @include grid-container($default-column-width: 1);
+    @include grid-container($column-width: 1);
 }
 
 .two-column-demo {
-    @include grid-container($default-column-width: (min: 1, xl: 1/2));
+    @include grid-container($column-width: (min: 1, xl: 1/2));
 }
 
 .three-column-demo {
-    @include grid-container($default-column-width: 1/3);
+    @include grid-container($column-width: 1/3);
 }
 
 .four-column-demo {
-    @include grid-container($default-column-width: 1/4);
+    @include grid-container($column-width: 1/4);
 }
 
 .six-column-demo {
-    @include grid-container($default-column-width: 1/6);
+    @include grid-container($column-width: 1/6);
 }
 
 .eight-column-demo {
-    @include grid-container($default-column-width: 1/8);
+    @include grid-container($column-width: 1/8);
 }
+
+// TODO: Add examples for above, except with overridden gutters
+
+// TODO: Add examples for above, except with overridden container padding
 
 // SPACED
 
@@ -81,7 +85,7 @@ body > * {
 }
 
 .three-column-spaced-demo {
-    @include grid-container;
+    @include grid-container($column-width: 1/4);
 
     &__column:not(:nth-child(3n)) {
         @include grid-column($width: 1/4, $margin-right: 3/24);
@@ -113,7 +117,7 @@ body > * {
 }
 
 .two-column-with-images-demo {
-    @include grid-container($default-column-width: 1/2);
+    @include grid-container($column-width: 1/2);
 
     > * > * > * > * {
         @include aspect-ratio(16, 9);
@@ -121,11 +125,11 @@ body > * {
 }
 
 .three-column-with-images-demo {
-    @include grid-container($default-column-width: 1/3);
+    @include grid-container($column-width: 1/3);
 }
 
 .four-column-with-images-demo {
-    @include grid-container($default-column-width: 1/4);
+    @include grid-container($column-width: 1/4);
 
     > * > * > * > * {
         @include aspect-ratio(16, 9);
@@ -133,7 +137,7 @@ body > * {
 }
 
 .six-column-with-images-demo {
-    @include grid-container($default-column-width: 1/6);
+    @include grid-container($column-width: 1/6);
 
     > * > * > * > * {
         @include aspect-ratio(16, 9);
@@ -141,7 +145,7 @@ body > * {
 }
 
 .eight-column-with-images-demo {
-    @include grid-container($default-column-width: 1/8);
+    @include grid-container($column-width: 1/8);
 
     > * > * > * > * {
         @include aspect-ratio(16, 9);
@@ -149,11 +153,11 @@ body > * {
 }
 
 .nested-grid-demo {
-    @include grid-container($default-column-width: 1/3);
+    @include grid-container($column-width: 1/3);
 }
 
 .nested-grid-demo-nested-grid {
-    @include grid-row($default-column-width: 1/2, $nested: true);
+    @include grid-row($column-width: 1/2, $nested: true);
 
     &__column {
         @include grid-column($width: 1/2);
@@ -161,10 +165,10 @@ body > * {
 }
 
 .two-column-spill-with-images-demo {
-    @include grid-container($default-column-width: 1/2);
+    @include grid-container($column-width: 1/2);
 
     &__column:nth-child(1) {
-        @include grid-column($width: 1/2, $spill-direction: left, $gutter-left: 1);
+        @include grid-column($width: 1/2, $spill-direction: left);
 
         > * > * {
             @include aspect-ratio(4, 3);
@@ -172,7 +176,7 @@ body > * {
     }
 
     &__column:nth-child(2) {
-        @include grid-column($width: 1/2, $spill-direction: right, $gutter-right: 1);
+        @include grid-column($width: 1/2, $spill-direction: right);
 
         > * > * {
             @include aspect-ratio(16, 9);
@@ -181,18 +185,14 @@ body > * {
 }
 
 .three-column-spill-with-images-demo {
-    @include grid-container($default-column-width: 1/3);
+    @include grid-container($column-width: 1/3);
 
     &__column:nth-child(1) {
-        @include grid-column($width: 1/3, $spill-direction: left, $gutter-left: 1);
-
-        > * > * {
-            @include aspect-ratio(1, 1);
-        }
+        @include grid-column($width: 1/3, $spill-direction: left);
     }
 
     &__column:nth-child(3) {
-        @include grid-column($width: 1/3, $spill-direction: right, $gutter-right: 1);
+        @include grid-column($width: 1/3, $spill-direction: right);
 
         > * > * {
             @include aspect-ratio(16, 9);
@@ -204,7 +204,7 @@ body > * {
     @include grid-container;
 
     &__column:nth-child(1) {
-        @include grid-column($width: 1/4, $spill-direction: left, $gutter-left: 1);
+        @include grid-column($width: 1/4, $spill-direction: left);
 
         > * > * {
             @include aspect-ratio(1, 1);
@@ -213,6 +213,7 @@ body > * {
 
     &__column:nth-child(2) {
         @include grid-column($width: 1/4);
+
         > * > * {
             @include aspect-ratio(16, 9);
         }
@@ -226,7 +227,7 @@ body > * {
     }
 
     &__column:nth-child(4) {
-        @include grid-column($width: 1/4, $spill-direction: right, $gutter-right: 1);
+        @include grid-column($width: 1/4, $spill-direction: right);
 
         > * > * {
             @include aspect-ratio(3, 2);
@@ -238,8 +239,8 @@ body > * {
     @include grid-container;
 
     &__column:nth-child(odd) {
-        @include grid-column($width: 1/2, $spill-direction: left, $gutter-left: 1);
-
+        @include grid-column($width: 1/2, $spill-direction: left);
+        
         > * > * {
             @include aspect-ratio(16, 9);
         }
@@ -266,7 +267,7 @@ body > * {
     }
 
     &__column:nth-child(even) {
-        @include grid-column($width: 1/2, $spill-direction: right, $gutter-right: 1);
+        @include grid-column($width: 1/2, $spill-direction: right);
 
         > * > * {
             @include aspect-ratio(16, 9);
@@ -277,7 +278,7 @@ body > * {
 // CONFORM IMAGE HEIGHTS
 
 .two-column-conform-images-demo {
-    @include grid-container($default-column-width: 1/2);
+    @include grid-container($column-width: 1/2);
 
     > * {
         > *:nth-child(odd) > * > * {
@@ -297,22 +298,22 @@ body > * {
 // SPILL
 
 .two-column-spill-demo {
-    @include grid-container($default-column-width: 1/2);
+    @include grid-container($column-width: 1/2);
 
     &__column:nth-child(1) {
-        @include grid-column($width: 1/2, $spill-direction: left, $gutter-left: 0);
+        @include grid-column($width: 1/2, $spill-direction: left);
     }
 
     &__column:nth-child(2) {
-        @include grid-column($width: 1/2, $spill-direction: right, $gutter-right: 0);
+        @include grid-column($width: 1/2, $spill-direction: right);
     }
 }
 
 .three-column-spill-demo {
-    @include grid-container($default-column-width: 1/4);
+    @include grid-container($column-width: 1/4);
 
     &__column:nth-child(1) {
-        @include grid-column($width: 1/4, $spill-direction: left, $gutter-left: 0);
+        @include grid-column($width: 1/4, $spill-direction: left);
     }
 
     &__column:nth-child(2) {
@@ -320,15 +321,15 @@ body > * {
     }
 
     &__column:nth-child(3) {
-        @include grid-column($width: 1/4, $spill-direction: right, $gutter-right: 0);
+        @include grid-column($width: 1/4, $spill-direction: right);
     }
 }
 
 .four-column-spill-demo {
-    @include grid-container($default-column-width: 1/6);
+    @include grid-container($column-width: 1/6);
 
     &__column:nth-child(1) {
-        @include grid-column($width: 1/6, $spill-direction: left, $gutter-left: 0);
+        @include grid-column($width: 1/6, $spill-direction: left);
     }
 
     &__column:nth-child(2),
@@ -337,19 +338,19 @@ body > * {
     }
 
     &__column:nth-child(4) {
-        @include grid-column($width: 1/6, $spill-direction: right, $gutter-right: 0);
+        @include grid-column($width: 1/6, $spill-direction: right);
     }
 }
 
 .two-column-spill-left-demo {
-    @include grid-container($default-column-width: 1/2);
+    @include grid-container($column-width: 1/2);
 
     &__column {
         @include grid-column($width: 1/2);
     }
 
     &__column:nth-child(2n-1) {
-        @include grid-column($width: 1/2, $spill-direction: left, $gutter-left: 0);
+        @include grid-column($width: 1/2, $spill-direction: left);
     }
 }
 
@@ -361,14 +362,14 @@ body > * {
     }
 
     &__column:nth-child(2n) {
-        @include grid-column($width: 1/2, $spill-direction: right, $gutter-right: 0);
+        @include grid-column($width: 1/2, $spill-direction: right);
     }
 }
 
 // SPILL WITH CONTENT CONSTRAINED TO GRID
 
 .two-column-spill-with-content-constrained-to-grid-demo {
-    @include grid-container($default-column-width: 1/2);
+    @include grid-container($column-width: 1/2);
 
     &__background {
         position: absolute;
@@ -393,19 +394,15 @@ body > * {
         @include grid-column($width: 1/2, $spill-direction: left);
         
         & > * {
-            @include grid-column-spill-inset-contents(left);
+            @include grid-column-spill-reverse(left);
         }
     }
 
     &__column:nth-child(even) {
-        @include grid-column($width: 1/2, $spill-direction: right, $gutter-right: 0);
+        @include grid-column($width: 1/2, $spill-direction: right);
 
         & > * {
             @include fluid-property-map('padding-right', $grid-container-padding-left);
-
-            & > * {
-                @include grid-gutter($side: right);
-            }
         }
     }
 }
