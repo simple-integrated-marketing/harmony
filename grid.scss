@@ -13,21 +13,24 @@
  * Usage:
  * @include ...
  */
-@mixin grid-container(
+@mixin grid(
     $column-width: 1,
     $horizontal-gutters: $horizontal-gutters,
     $vertical-gutters: $vertical-gutters
 ) {
+    display: flex;
+    position: relative;    
     width: 100%; // Prevents collapse when flex parent
-    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
 
     @include grid-container-padding;
 
-    &__row {
-        @include grid-row(
-            $column-width: $column-width
-        );
-    }
+    // &__row {
+    //     @include grid-row(
+    //         $column-width: $column-width
+    //     );
+    // }
     
     // Apply default column widths as a convenience function for straightforward use cases, where all columns are the same width.
     &__column {
@@ -40,17 +43,17 @@
 }
 
 @mixin grid-container-padding {
-    @if (is-valid-property-map($grid-container-padding-left)) {
+    @if (is-valid-property-map($grid-padding-left)) {
         @include fluid-property-map(
             $property: "padding-left",
-            $values: $grid-container-padding-left
+            $values: $grid-padding-left
         );
     }
 
-    @if (is-valid-property-map($grid-container-padding-right)) {
+    @if (is-valid-property-map($grid-padding-right)) {
         @include fluid-property-map(
             $property: "padding-right",
-            $values: $grid-container-padding-right
+            $values: $grid-padding-right
         );
     }
 }
@@ -76,6 +79,8 @@
     }
 
     @if($nested) {
+        @include grid-gutter($side: top, $multiplier: -0.5);
+        @include grid-gutter($side: bottom, $multiplier: 0.5);
         @include grid-gutter($side: left, $multiplier: -0.5);
         @include grid-gutter($side: right, $multiplier: -0.5);
     }
@@ -88,7 +93,7 @@
  * @include ...
  */
 @mixin grid-column(
-    $width: null,
+    $width: 1,
     $spill-direction: null,
     $margin-left: null,
     $margin-right: null,
@@ -219,16 +224,16 @@
         @error('Invalid spill direction value: #{$direction}');
     }
 
-    @if $direction == left and not is-valid-property-map($grid-container-padding-left) {
-        @error('$grid-container-padding-left must be set in order to spill a column to the left.');
+    @if $direction == left and not is-valid-property-map($grid-padding-left) {
+        @error('$grid-padding-left must be set in order to spill a column to the left.');
     }
 
-    @if $direction == right and not is-valid-property-map($grid-container-padding-right) {
-        @error('$grid-container-padding-right must be set in order to spill a column to the right.');
+    @if $direction == right and not is-valid-property-map($grid-padding-right) {
+        @error('$grid-padding-right must be set in order to spill a column to the right.');
     }
 
     $opposite: get-opposite-direction($direction);
-    $padding: if($direction == left, $grid-container-padding-left, $grid-container-padding-right);
+    $padding: if($direction == left, $grid-padding-left, $grid-padding-right);
     $gutters: map-multiply($horizontal-gutters, 0.5);
     // $distance: map-subtract($padding, $gutters);
     $distance: $padding;
@@ -271,7 +276,7 @@
         @error('Invalid spill direction value: #{$direction}');
     }
 
-    $distance: if($direction == left, $grid-container-padding-left, $grid-container-padding-right);
+    $distance: if($direction == left, $grid-padding-left, $grid-padding-right);
     $gutters: map-multiply($horizontal-gutters, 0.5);
  
     @if($direction == left) {
@@ -282,25 +287,25 @@
 }
 
 @mixin grid-overlay {
-    @include grid-container($column-width: 1 / $overlay-columns);
+    @include grid($column-width: 1 / $overlay-columns);
 
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
 
-    display: block;
+    // display: block;
     visibility: hidden;
-    margin-top: 0;
+    // margin-top: 0;
 
     html.show-grid & {
         visibility: visible;
     }
 
-    &__row {
-        height: 100vh;
-        margin-top: 0;
-    }
+    // &__row {
+    //     height: 100vh;
+    //     margin-top: 0;
+    // }
 
     &__column:before {
         display: block;
@@ -356,8 +361,8 @@
 @mixin grid-column-to-property($property, $width) {
     $widths: ();
 
-    @each $key, $left-value in $grid-container-padding-left {
-        $right-value: map-get($grid-container-padding-right, $key);
+    @each $key, $left-value in $grid-padding-left {
+        $right-value: map-get($grid-padding-right, $key);
         $breakpoint: map-get($breakpoints, $key);
         $calculated-width: ($breakpoint - $left-value - $right-value) * $width;
 
@@ -369,18 +374,18 @@
 
 // Validate variables
 
-@if(not map-keys-correspond-to-keys-in-other-map($grid-container-padding-left, $breakpoints)) {
-    @error('The breakpoints in $grid-container-padding-left do not all correspond to breakpoints in $breakpoints.');
+@if(not map-keys-correspond-to-keys-in-other-map($grid-padding-left, $breakpoints)) {
+    @error('The breakpoints in $grid-padding-left do not all correspond to breakpoints in $breakpoints.');
 }
 
-@if(not map-keys-correspond-to-keys-in-other-map($grid-container-padding-right, $breakpoints)) {
-    @error('The breakpoints in $grid-container-padding-right do not all correspond to breakpoints in $breakpoints.');
+@if(not map-keys-correspond-to-keys-in-other-map($grid-padding-right, $breakpoints)) {
+    @error('The breakpoints in $grid-padding-right do not all correspond to breakpoints in $breakpoints.');
 }
 
-@if(not maps-have-same-keys($grid-container-padding-left, $grid-container-padding-right)) {
-    @error('The breakpoint IDs in $grid-container-padding-left and $grid-container-padding-left do not match.');
+@if(not maps-have-same-keys($grid-padding-left, $grid-padding-right)) {
+    @error('The breakpoint IDs in $grid-padding-left and $grid-padding-left do not match.');
 }
 
-@if(not maps-have-same-keys($grid-container-padding-left, $horizontal-gutters)) {
-    @error('The breakpoint IDs in $grid-container-padding-left and $horizontal-gutters do not match.');
+@if(not maps-have-same-keys($grid-padding-left, $horizontal-gutters)) {
+    @error('The breakpoint IDs in $grid-padding-left and $horizontal-gutters do not match.');
 }

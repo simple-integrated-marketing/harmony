@@ -22,8 +22,8 @@ document.addEventListener('keypress', event => {
  */
 
 const overlay = document.createElement('div');
-const overlayRow = overlay.appendChild(document.createElement('div'));
-overlayRow.classList.add('grid-overlay__row');
+// const overlayRow = overlay.appendChild(document.createElement('div'));
+// overlayRow.classList.add('grid-overlay__row');
 
 overlay.classList.add('grid-overlay');
 
@@ -31,8 +31,8 @@ for(var i = 0; i < 24; i++) {
     let column = document.createElement('div');
     column.classList.add('grid-overlay__column');
     column.appendChild(document.createElement('div'));
-    overlayRow.appendChild(column);
+    overlay.appendChild(column);
 }
 
-overlay.appendChild(overlayRow);
+// overlay.appendChild(overlayRow);
 document.body.appendChild(overlay);

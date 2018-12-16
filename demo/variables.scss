@@ -9,12 +9,12 @@ $breakpoints: (
     xxxl: 2200px
 );
 
-$grid-container-padding-left: (
+$grid-padding-left: (
     sm: 16px,
     xxxl: 320px
 );
 
-$grid-container-padding-right: $grid-container-padding-left;
+$grid-padding-right: $grid-padding-left;
 
 $horizontal-gutters: (
     sm: 8px,
