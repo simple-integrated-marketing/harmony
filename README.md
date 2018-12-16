@@ -4,8 +4,7 @@
 
 ## Features
 
-- Insanely customisable
-- Global config for body padding, grid gutters, font-sizes and character heights
+- Highly customisable global config for body padding, grid gutters, font-sizes and character heights
 - Modern IE10+ CSS normalization
 - Built with vertical-rhythm in mind
 - Minimal CSS inheritance chain
@@ -15,8 +14,8 @@
 Install from npm<br>
 `npm i harmony`
 
-Import the harmony mixins:<br>
-`@import "harmony/normalize";`
+Import the harmony mixin files:<br>
+`@import "harmony/normalize";`<br>
 `@import "harmony/core";`
 
 Also included are some helpful grid tools.
@@ -25,6 +24,6 @@ To use these tools, import the script in your JS:<br>
 `import 'harmony/grid-tools';`
 
 ## Contributors:
-[Aaron mccaffery](https://github.com/aaronmccaffery) and [@benrogerson](https://twitter.com/benrogerson).
+[Aaron Mccaffery](https://github.com/aaronmccaffery) and [@benrogerson](https://twitter.com/benrogerson).
 
 Created by [Simple](https://simple.com.au/).
