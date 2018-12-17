@@ -19,12 +19,15 @@ const reset = () => {
 }
 
 document.addEventListener('keypress', event => {
-        (event.key === '1') && html.classList.toggle(classShowGrid);
-        (event.key === '2') && html.classList.toggle(classShowContainers);
-        (event.key === '3') && html.classList.toggle(classShowColumns);
-        (event.key === '4') && html.classList.toggle(classShowBlocks);
-        (event.key === '5') && html.classList.toggle(classShowBaselines);
-        (event.key === '`') && reset();
+    if(document.activeElement != document.body) {
+        return;
+    }
+    (event.key === '1') && html.classList.toggle(classShowGrid);
+    (event.key === '2') && html.classList.toggle(classShowContainers);
+    (event.key === '3') && html.classList.toggle(classShowColumns);
+    (event.key === '4') && html.classList.toggle(classShowBlocks);
+    (event.key === '5') && html.classList.toggle(classShowBaselines);
+    (event.key === '`') && reset();
 });
 
 
