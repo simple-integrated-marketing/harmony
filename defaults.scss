@@ -24,13 +24,10 @@ $grid-padding-left: (
 $grid-padding-right: $grid-padding-left !default;
 
 // Whats this do?
-$horizontal-gutters: (
+$gutters: (
     min: 8px,
     xxxl: 16px
 ) !default;
-
-// Whats this do?
-$vertical-gutters: $horizontal-gutters !default;
 
 // Whats this do?
 $font-sizes: (

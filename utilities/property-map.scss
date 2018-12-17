@@ -37,21 +37,17 @@
         }
         
         @if $is-first {
-            @debug('First: #{$property}: #{$min-value};');
             @media (max-width: #{$min-breakpoint - 1}px) {
                 #{$property}: $min-value;
             }
         }
         
-        @debug('Mid: #{$property}: #{$min-value};');
-
         @media (min-width: #{$min-breakpoint}px) and (max-width: #{$max-breakpoint - 1}px) {
             #{$property}: $min-value;
         }
 
         
         @if $is-last {
-            @debug('Last: #{$property}: #{$max-value};');
             @media (min-width: #{$max-breakpoint}px) {
                 #{$property}: $max-value;
             }

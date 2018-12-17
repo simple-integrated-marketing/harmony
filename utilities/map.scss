@@ -2,6 +2,7 @@
 
 @function is-valid-property-map($map) {
     @return
+        $map and
         type-of($map) == "map" and
         length($map) > 0 and
         map-keys-correspond-to-keys-in-other-map($map, $breakpoints);

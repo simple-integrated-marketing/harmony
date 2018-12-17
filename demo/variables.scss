@@ -16,12 +16,10 @@ $grid-padding-left: (
 
 $grid-padding-right: $grid-padding-left;
 
-$horizontal-gutters: (
+$gutters: (
     sm: 8px,
     xxxl: 48px
 );
-
-$vertical-gutters: $horizontal-gutters;
 
 $font-sizes: (
     min: 12px,

@@ -374,7 +374,7 @@ body > * {
         bottom: 0;
         right: 0;
         z-index: -1;
-
+        
         background-image: url('https://via.placeholder.com/1200/222222');
         background-position: center;
         background-size: cover;
@@ -384,8 +384,6 @@ body > * {
         @include wysiwyg;
     }
 
-    // TODO fix -- more complex
-        
     &__column:nth-child(odd) {
         @include grid-column($width: 1/2, $spill-direction: left);
         
