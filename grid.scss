@@ -16,7 +16,8 @@
 @mixin grid(
     $column-width: 1,
     $horizontal-gutters: $horizontal-gutters,
-    $vertical-gutters: $vertical-gutters
+    $vertical-gutters: $vertical-gutters,
+    $nested: false
 ) {
     display: flex;
     position: relative;    
@@ -24,7 +25,13 @@
     flex-direction: row;
     flex-wrap: wrap;
 
-    @include grid-container-padding;
+    $negative-horizontal-gutters: map-multiply($horizontal-gutters, -0.5);
+    
+    @if($nested) {
+        @include grid-container-padding($left: $negative-horizontal-gutters, $right: $negative-horizontal-gutters);
+    } @else {
+        @include grid-container-padding($left: $grid-padding-left, $right: $grid-padding-left);
+    }
 
     // &__row {
     //     @include grid-row(
@@ -42,20 +49,23 @@
     }
 }
 
-@mixin grid-container-padding {
-    @if (is-valid-property-map($grid-padding-left)) {
+@mixin grid-container-padding($left: $grid-padding-left, $right: $grid-padding-right) {
+    @if (is-valid-property-map($left)) {
         @include fluid-property-map(
             $property: "padding-left",
-            $values: $grid-padding-left
+            $values: $left
         );
     }
 
-    @if (is-valid-property-map($grid-padding-right)) {
+    @if (is-valid-property-map($right)) {
         @include fluid-property-map(
             $property: "padding-right",
-            $values: $grid-padding-right
+            $values: $right
         );
     }
+
+    @include grid-gutter($side: top, $multiplier: -0.5);
+    @include grid-gutter($side: bottom, $multiplier: 0.5);
 }
 
 /*
@@ -64,27 +74,27 @@
  * Usage:
  * @include ...
  */
-@mixin grid-row(
-    $column-width: null,
-    $nested: false
-) {
-    display: flex;
-    position: relative;
-    flex-direction: row;
-    flex-wrap: wrap;
+// @mixin grid-row(
+//     $column-width: none,
+//     $nested: false
+// ) {
+//     display: flex;
+//     position: relative;
+//     flex-direction: row;
+//     flex-wrap: wrap;
 
-    @if(is-valid-property-map($vertical-gutters)) {
-        // @include grid-gutter($side: top, $multiplier: -1);
-        // @include grid-gutter($side: bottom, $multiplier: 1);
-    }
+//     @if(is-valid-property-map($vertical-gutters)) {
+//         // @include grid-gutter($side: top, $multiplier: -1);
+//         // @include grid-gutter($side: bottom, $multiplier: 1);
+//     }
 
-    @if($nested) {
-        @include grid-gutter($side: top, $multiplier: -0.5);
-        @include grid-gutter($side: bottom, $multiplier: 0.5);
-        @include grid-gutter($side: left, $multiplier: -0.5);
-        @include grid-gutter($side: right, $multiplier: -0.5);
-    }
-}
+//     @if($nested) {
+//         @include grid-gutter($side: top, $multiplier: -0.5);
+//         @include grid-gutter($side: bottom, $multiplier: 0.5);
+//         @include grid-gutter($side: left, $multiplier: -0.5);
+//         @include grid-gutter($side: right, $multiplier: -0.5);
+//     }
+// }
 
 /*
  * Short description goes here.
@@ -93,10 +103,10 @@
  * @include ...
  */
 @mixin grid-column(
-    $width: 1,
-    $spill-direction: null,
-    $margin-left: null,
-    $margin-right: null,
+    $width: none,
+    $spill-direction: none,
+    $margin-left: none,
+    $margin-right: none,
     $horizontal-gutters: $horizontal-gutters,
     $vertical-gutters: $vertical-gutters
 ) {
@@ -104,18 +114,17 @@
     min-width: 0;
 
     // Width
-    @if($width != null) {
-        @if(is-valid-property-map($width)) {
-            $width: map-strip-unit($width);
-            $width: map-percentage($width);
-            @include property-map('width', $width);
-        } @else if type-of($width) == "number" {
-            width: percentage($width);
-        } @else if $width == null {
-    
-        } @else {
-            @debug('Column width must be a map or a number.');
-        }
+    @if($width == none) {
+        // Do nothing
+    }
+    @else if(is-valid-property-map($width)) {
+        $width: map-strip-unit($width);
+        $width: map-percentage($width);
+        @include property-map('width', $width);
+    } @else if type-of($width) == "number" {
+        width: percentage($width);
+    } @else {
+        @debug('Column width must be a map or a number.');
     }
 
     // Horizontal gutters
@@ -146,17 +155,17 @@
     }
 
     // Spill
-    @if $spill-direction != null {
+    @if $spill-direction != none {
         @include grid-column-spill($spill-direction);
     }
     
     // Margin left
-    @if ($margin-left != null) {
+    @if ($margin-left != none) {
         @include grid-column-margin(left, $margin-left);
     }
 
     // Margin right
-    @if ($margin-right != null) {
+    @if ($margin-right != none) {
         @include grid-column-margin(right, $margin-right);
     }
 
@@ -234,13 +243,7 @@
 
     $opposite: get-opposite-direction($direction);
     $padding: if($direction == left, $grid-padding-left, $grid-padding-right);
-    $gutters: map-multiply($horizontal-gutters, 0.5);
-    // $distance: map-subtract($padding, $gutters);
     $distance: $padding;
-
-    // $distance-minus-padding: map-subtract($padding, $horizontal-gutters);
-    
-    position: relative;
 
     @include fluid-property-map(
         $property: #{$direction},
@@ -294,18 +297,11 @@
     left: 0;
     pointer-events: none;
 
-    // display: block;
     visibility: hidden;
-    // margin-top: 0;
 
     html.show-grid & {
         visibility: visible;
     }
-
-    // &__row {
-    //     height: 100vh;
-    //     margin-top: 0;
-    // }
 
     &__column:before {
         display: block;
@@ -330,9 +326,6 @@
     }
 
     &__column {
-        padding-top: 0;
-        margin-top: 0;
-
         .show-block-children & > div  {
             box-shadow: none !important;
         }

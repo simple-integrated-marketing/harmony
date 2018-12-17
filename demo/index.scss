@@ -12,6 +12,10 @@ body {
     color: #fff;
 }
 
+body > * {
+    margin-bottom: 8rem;
+}
+
 .demo-title {
     @include grid(1);
     @include wysiwyg;
@@ -151,7 +155,7 @@ body {
 }
 
 .nested-grid-demo-nested-grid {
-    @include grid-row($column-width: 1/2, $nested: true);
+    @include grid($column-width: 1/2, $nested: true);
 
     &__column {
         @include grid-column($width: 1/2);
