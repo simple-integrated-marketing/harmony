@@ -12,12 +12,10 @@
  * @include ...
  */
 @mixin grid(
-    $column-width: 1,
     $nested: false
 ) {
     display: flex;
-    position: relative;    
-    width: 100%; // Prevents collapse when flex parent
+    position: relative;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
@@ -25,12 +23,12 @@
     @if($nested) {
         @if(is-valid-property-map($gutters)) {
             @include fluid-property-map(
-                $property: "padding-left",
+                $property: "margin-left",
                 $values: $gutters,
                 $multiplier: -0.5
             );
             @include fluid-property-map(
-                $property: "padding-right",
+                $property: "margin-right",
                 $values: $gutters,
                 $multiplier: -0.5
             );
@@ -52,12 +50,12 @@
     }
     
     // Apply default column widths as a convenience function for straightforward use cases, where all columns are the same width.
-    &__column {
-        @include grid-column(
-            $width: $column-width,
-            $gutters: $gutters
-        );
-    }
+    // &__column {
+    //     @include grid-column(
+    //         $width: $column-width,
+    //         $gutters: $gutters
+    //     );
+    // }
 }
 
 /*
@@ -204,7 +202,7 @@
 }
 
 @mixin grid-overlay {
-    @include grid($column-width: 1 / $overlay-columns);
+    @include grid;
 
     position: fixed;
     top: 0;
@@ -213,8 +211,16 @@
 
     visibility: hidden;
 
+    width: 100%; // Prevents collapse when flex parent
+
     html.show-grid & {
         visibility: visible;
+    }
+
+    &__column {
+        @include grid-column(
+            $width: 1 / $overlay-columns
+        );
     }
 
     &__column:before {
