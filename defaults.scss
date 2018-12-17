@@ -43,8 +43,10 @@ $cap-heights: (
 $overlay-columns: 12 !default;
 
 // Whats this do?
-$colour-baseline-grid: rgba(#0f0, 1) !default;
+$colour-baseline-grid: rgba(#0f0, 0.75) !default;
 $colour-column-overlay: rgba(#f00, 0.25) !default;
-$colour-columns: rgba(#0FF, 0.25) !default;
-$colour-blocks: rgba(#f0f, 0.5) !default;
-$colour-rows: rgba(#ff0, 0.5) !default;
+$colour-columns: rgba(#F90, 0.75) !default;
+$colour-blocks: rgba(#f0f, 0.75) !default;
+$colour-rows: rgba(#ff0, 0.75) !default;
+$colour-grids: rgba(#00f, 0.75) !default;
+$colour-nested-grids: rgba(#0FF, 0.75) !default;

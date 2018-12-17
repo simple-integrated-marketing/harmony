@@ -1,5 +1,6 @@
 @import "./utilities/map";
 @import "./utilities/strip-unit";
+@import "./utilities/highlight-helper";
 
 // =============================================================================
 // Grid
@@ -49,13 +50,11 @@
         }
     }
     
-    // Apply default column widths as a convenience function for straightforward use cases, where all columns are the same width.
-    // &__column {
-    //     @include grid-column(
-    //         $width: $column-width,
-    //         $gutters: $gutters
-    //     );
-    // }
+    @if($nested) {
+        @include highlight-helper('Nested Grid', $colour-nested-grids, '.show-containers');
+    } @else {
+        @include highlight-helper('Grid', $colour-grids, '.show-containers');
+    }
 }
 
 /*
@@ -66,32 +65,25 @@
  */
 @mixin grid-column(
     $width: none,
-    $spill-direction: none,
     $margin-left: none,
     $margin-right: none,
-    $gutters: $gutters
+    $spill-direction: none,
+    $gutter-left: 0.5,
+    $gutter-right: 0.5,
+    $gutter-top: 0,
+    $gutter-bottom: 0
 ) {
     position: relative;
     min-width: 0;
 
     // Width
-    @if($width == none) {
-        // Do nothing
-    }
-    @else if(is-valid-property-map($width)) {
-        $width: map-strip-unit($width);
-        $width: map-percentage($width);
-        @include property-map('width', $width);
-    } @else if type-of($width) == "number" {
-        width: percentage($width);
-    } @else {
-        @debug('Column width must be a map or a number.');
+    @if($width != none) {
+        @include grid-column-width($width);
     }
 
     // Horizontal gutters
-    @if (is-valid-property-map($gutters)) {
-        @include fluid-property-map($property: padding-left, $values: $gutters, $multiplier: 0.5);
-        @include fluid-property-map($property: padding-right, $values: $gutters, $multiplier: 0.5);
+    @if(is-valid-property-map($gutters)) {
+        @include grid-column-gutters($gutter-left: $gutter-left, $gutter-right: $gutter-right, $gutter-top: $gutter-top, $gutter-bottom: $gutter-bottom);
     }
 
     // Spill
@@ -109,12 +101,41 @@
         @include grid-column-margin(right, $margin-right);
     }
 
-    .show-columns & {
-        box-shadow: inset 0px 0px 0px 4000px $colour-columns;
+    @include highlight-helper('grid-column', $colour-columns, '.show-columns');
+
+    & > * {
+        position: relative;
+        @include highlight-helper('grid-column > *', $colour-blocks, '.show-block-children');
+    }
+}
+
+@mixin grid-column-width($width: none) {
+    @if(is-valid-property-map($width)) {
+        $width: map-strip-unit($width);
+        $width: map-percentage($width);
+        @include property-map('width', $width);
+    } @else if type-of($width) == "number" {
+        width: percentage($width);
+    } @else {
+        @error("$width must be either a number or a valid property map.");
+    }
+}
+
+@mixin grid-column-gutters($gutter-left: 0.5, $gutter-right: 0.5, $gutter-top: 0, $gutter-bottom: 0) {
+    @if($gutter-top != 0) {
+        @include fluid-property-map($property: padding-top, $values: $gutters, $multiplier: $gutter-top);
     }
 
-    .show-block-children & > * {
-        box-shadow: inset 0px 0px 0px 4000px $colour-blocks;
+    @if($gutter-bottom != 0) {
+        @include fluid-property-map($property: padding-bottom, $values: $gutters, $multiplier: $gutter-bottom);
+    }
+
+    @if($gutter-left != 0) {
+        @include fluid-property-map($property: padding-left, $values: $gutters, $multiplier: $gutter-left);
+    }
+
+    @if($gutter-right != 0) {
+        @include fluid-property-map($property: padding-right, $values: $gutters, $multiplier: $gutter-right);
     }
 }
 
@@ -217,6 +238,10 @@
         visibility: visible;
     }
 
+    .show-containers &:after {
+        display: none;
+    }
+    
     &__column {
         @include grid-column(
             $width: 1 / $overlay-columns
@@ -228,30 +253,29 @@
         position: absolute;
         content: '';
         top: 0;
-        left: -0.5px;
+        left: 0;
         bottom: 0;
-        width: 1px;
-        background-color: $colour-column-overlay;
+        right: 0;
+        // width: 1px;
+        // background-color: $colour-column-overlay;
+        border: 0.5px solid $colour-column-overlay;
     }
 
-    &__column:nth-child(#{$overlay-columns}):after {
-        display: block;
-        position: absolute;
-        content: '';
-        top: 0;
-        right: -0.5px;
-        bottom: 0;
-        width: 1px;
-        background-color: $colour-column-overlay;
-    }
+    // &__column:nth-child(#{$overlay-columns}):after {
+    //     display: block;
+    //     position: absolute;
+    //     content: '';
+    //     top: 0;
+    //     right: -0.5px;
+    //     bottom: 0;
+    //     width: 1px;
+    //     background-color: $colour-column-overlay;
+    // }
 
     &__column {
-        .show-block-children & > div  {
-            box-shadow: none !important;
-        }
-
-        .show-columns &  {
-            box-shadow: none !important;
+        .show-block-children & > *:after,
+        .show-columns &:after {
+            display: none !important;
         }
     }
 
