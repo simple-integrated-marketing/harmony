@@ -20,17 +20,25 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
-    
+
+    @if($vertical-gutters) {
+        @include grid-vertical-margins($top: -1);
+        
+        & > * {
+            @include grid-vertical-margins($top: 1);
+        }
+    }
+
     @if($nested) {
-        @if(is-valid-property-map($gutters)) {
+        @if(is-valid-property-map($horizontal-gutters)) {
             @include fluid-property-map(
                 $property: "margin-left",
-                $values: $gutters,
+                $values: $horizontal-gutters,
                 $multiplier: -0.5
             );
             @include fluid-property-map(
                 $property: "margin-right",
-                $values: $gutters,
+                $values: $horizontal-gutters,
                 $multiplier: -0.5
             );
         }
@@ -45,7 +53,7 @@
         @if(is-valid-property-map($grid-padding-right)) {
             @include fluid-property-map(
                 $property: "padding-right",
-                $values: $grid-padding-left
+                $values: $grid-padding-right
             );
         }
     }
@@ -53,7 +61,9 @@
     @if($nested) {
         @include highlight-helper('Nested Grid', $colour-nested-grids, '.show-containers');
     } @else {
-        @include highlight-helper('Grid', $colour-grids, '.show-containers');
+        @include highlight-helper('Grid', $colour-grids, '.show-containers') {
+            @include grid-vertical-margins($top: 1);
+        }
     }
 }
 
@@ -67,8 +77,6 @@
     $width: null,
     $margin-left: null,
     $margin-right: null,
-    $margin-top: null,
-    $margin-bottom: null,
     $padding-left: 0.5,
     $padding-right: 0.5,
     $padding-top: null,
@@ -83,21 +91,23 @@
         @include grid-column-width($width);
     }
 
-    @if($gutters != null) {
+    @if($horizontal-gutters != null) {
 
         // Gutters
-        @include grid-column-padding($padding-left: $padding-left, $padding-right: $padding-right, $padding-top: $padding-top, $padding-bottom: $padding-bottom);
+        @include grid-column-padding($padding-left: $padding-left, $padding-right: $padding-right);
 
         // Margins
-        @if($spill-direction != null and ($margin-left != null or $margin-right != null or $margin-top != null or $margin-bottom != null)) {
+        @if($spill-direction != null and ($margin-left != null or $margin-right != null)) {
             @error('Margins and spill-direction cannot be set simultaneously.');
         }
 
-        @include grid-column-vertical-margins($top: $margin-top, $bottom: $margin-bottom);
+        // @include grid-column-vertical-margins($top: $margin-top, $bottom: $margin-bottom);
+        @include grid-column-horizontal-margins($left: $margin-left, $right: $margin-right);
     }
 
-    @include grid-column-horizontal-margins($left: $margin-left, $right: $margin-right);
-    
+    @if($vertical-gutters != null) {
+        @include grid-column-padding($padding-top: $padding-top, $padding-bottom: $padding-bottom);
+    }
     
     // Spill
     @if $spill-direction != null {
@@ -136,7 +146,7 @@
  * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
  */
 
- @mixin grid-column-horizontal-margins($left: null, $right: null, $top: null, $bottom: null) {
+ @mixin grid-column-horizontal-margins($left: null, $right: null) {
     $margins: (left: $left, right: $right);
 
     @each $side, $amount in $margins {
@@ -152,16 +162,14 @@
     }
 }
 
-@mixin grid-column-vertical-margins($top: null, $bottom: null) {
+@mixin grid-vertical-margins($top: null, $bottom: null) {
     $margins: (top: $top, bottom: $bottom);
 
     @each $side, $amount in $margins {
-        @if(is-valid-property-map($amount)) {
-            @include property-map('margin-#{$side}', $amount);
-        } @else if type-of($amount) == "number" {
-            @include fluid-property-map($property: 'margin-#{$side}', $values: $gutters, $multiplier: $amount);
+        @if type-of($amount) == "number" {
+            @include fluid-property-map($property: 'margin-#{$side}', $values: $vertical-gutters, $multiplier: $amount);
         } @else if $amount != null {
-            @debug('A vertical margin for a column must be a property map or pixel values, or a number.');
+            @debug('A vertical margin for a column must be a unitless number.');
         }
     }
 }
@@ -175,19 +183,19 @@
 
 @mixin grid-column-padding($padding-left: 0.5, $padding-right: 0.5, $padding-top: 0, $padding-bottom: 0) {
     @if($padding-top != none) {
-        @include fluid-property-map($property: padding-top, $values: $gutters, $multiplier: $padding-top);
+        @include fluid-property-map($property: padding-top, $values: $vertical-gutters, $multiplier: $padding-top);
     }
 
     @if($padding-bottom != none) {
-        @include fluid-property-map($property: padding-bottom, $values: $gutters, $multiplier: $padding-bottom);
+        @include fluid-property-map($property: padding-bottom, $values: $vertical-gutters, $multiplier: $padding-bottom);
     }
 
     @if($padding-left != none) {
-        @include fluid-property-map($property: padding-left, $values: $gutters, $multiplier: $padding-left);
+        @include fluid-property-map($property: padding-left, $values: $horizontal-gutters, $multiplier: $padding-left);
     }
 
     @if($padding-right != none) {
-        @include fluid-property-map($property: padding-right, $values: $gutters, $multiplier: $padding-right);
+        @include fluid-property-map($property: padding-right, $values: $horizontal-gutters, $multiplier: $padding-right);
     }
 }
 
@@ -276,7 +284,7 @@
     }
 
     .show-containers &:after {
-        display: none;
+        display: none !important;
     }
     
     &__column {
@@ -331,8 +339,4 @@
 
 @if(not maps-have-same-keys($grid-padding-left, $grid-padding-right)) {
     @error('The breakpoint IDs in $grid-padding-left and $grid-padding-right do not match.');
-}
-
-@if(is-valid-property-map($grid-padding-left) and is-valid-property-map($gutters) and not maps-have-same-keys($grid-padding-left, $gutters)) {
-    @error('The breakpoint IDs in $grid-padding-left and $gutters do not match.');
 }
