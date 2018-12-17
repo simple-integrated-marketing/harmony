@@ -64,52 +64,61 @@
  * @include ...
  */
 @mixin grid-column(
-    $width: none,
-    $margin-left: none,
-    $margin-right: none,
-    $spill-direction: none,
-    $gutter-left: 0.5,
-    $gutter-right: 0.5,
-    $gutter-top: 0,
-    $gutter-bottom: 0
+    $width: null,
+    $margin-left: null,
+    $margin-right: null,
+    $margin-top: null,
+    $margin-bottom: null,
+    $padding-left: 0.5,
+    $padding-right: 0.5,
+    $padding-top: null,
+    $padding-bottom: null,
+    $spill-direction: null
 ) {
     position: relative;
     min-width: 0;
 
     // Width
-    @if($width != none) {
+    @if($width != null) {
         @include grid-column-width($width);
     }
 
-    // Horizontal gutters
-    @if(is-valid-property-map($gutters)) {
-        @include grid-column-gutters($gutter-left: $gutter-left, $gutter-right: $gutter-right, $gutter-top: $gutter-top, $gutter-bottom: $gutter-bottom);
+    @if($gutters != null) {
+
+        // Gutters
+        @include grid-column-padding($padding-left: $padding-left, $padding-right: $padding-right, $padding-top: $padding-top, $padding-bottom: $padding-bottom);
+
+        // Margins
+        @if($spill-direction != null and ($margin-left != null or $margin-right != null or $margin-top != null or $margin-bottom != null)) {
+            @error('Margins and spill-direction cannot be set simultaneously.');
+        }
+
+        @include grid-column-vertical-margins($top: $margin-top, $bottom: $margin-bottom);
     }
 
+    @include grid-column-horizontal-margins($left: $margin-left, $right: $margin-right);
+    
+    
     // Spill
-    @if $spill-direction != none {
+    @if $spill-direction != null {
         @include grid-column-spill($spill-direction);
     }
-    
-    // Margin left
-    @if ($margin-left != none) {
-        @include grid-column-margin(left, $margin-left);
-    }
 
-    // Margin right
-    @if ($margin-right != none) {
-        @include grid-column-margin(right, $margin-right);
-    }
-
+    // Helpers
     @include highlight-helper('grid-column', $colour-columns, '.show-columns');
 
     & > * {
-        position: relative;
         @include highlight-helper('grid-column > *', $colour-blocks, '.show-block-children');
     }
 }
 
-@mixin grid-column-width($width: none) {
+/*
+ * This mixin applies a width to a column based on a unitless fraction. It's designed to be agnostic to the number of
+ * columns in the grid system you're using, so you can express your column's width as 4/12, 8/24, 1/2, 1/8 ...or 1/7 if you enjoy headaches.
+ * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
+ */
+
+@mixin grid-column-width($width: null) {
     @if(is-valid-property-map($width)) {
         $width: map-strip-unit($width);
         $width: map-percentage($width);
@@ -121,43 +130,72 @@
     }
 }
 
-@mixin grid-column-gutters($gutter-left: 0.5, $gutter-right: 0.5, $gutter-top: 0, $gutter-bottom: 0) {
-    @if($gutter-top != 0) {
-        @include fluid-property-map($property: padding-top, $values: $gutters, $multiplier: $gutter-top);
-    }
+/*
+ * This mixin applies margins to a column based on a unitless fraction.
+ * A parameter of $side: left and $width: 1/4, for example, would push your column to the 
+ * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
+ */
 
-    @if($gutter-bottom != 0) {
-        @include fluid-property-map($property: padding-bottom, $values: $gutters, $multiplier: $gutter-bottom);
-    }
+ @mixin grid-column-horizontal-margins($left: null, $right: null, $top: null, $bottom: null) {
+    $margins: (left: $left, right: $right);
 
-    @if($gutter-left != 0) {
-        @include fluid-property-map($property: padding-left, $values: $gutters, $multiplier: $gutter-left);
-    }
-
-    @if($gutter-right != 0) {
-        @include fluid-property-map($property: padding-right, $values: $gutters, $multiplier: $gutter-right);
+    @each $side, $amount in $margins {
+        @if(is-valid-property-map($amount)) {
+            $amount: map-strip-unit($amount);
+            $amount: map-percentage($amount);
+            @include property-map('margin-#{$side}', $amount);
+        } @else if type-of($amount) == "number" {
+            margin-#{$side}: percentage($amount);
+        } @else if $amount != null {
+            @debug('A horizontal margin for a column must be a property map of fractions, or a number.');
+        }
     }
 }
 
-@mixin grid-column-margin($side, $width) {
-    @if(is-valid-property-map($width)) {
-        $width: map-strip-unit($width);
-        $width: map-percentage($width);
-        @include property-map('margin-#{$side}', $width);
-    } @else if type-of($width) == "number" {
-        margin-#{$side}: percentage($width);
-    } @else {
-        @debug('Column margin width must be a map or a number.');
+@mixin grid-column-vertical-margins($top: null, $bottom: null) {
+    $margins: (top: $top, bottom: $bottom);
+
+    @each $side, $amount in $margins {
+        @if(is-valid-property-map($amount)) {
+            @include property-map('margin-#{$side}', $amount);
+        } @else if type-of($amount) == "number" {
+            @include fluid-property-map($property: 'margin-#{$side}', $values: $gutters, $multiplier: $amount);
+        } @else if $amount != null {
+            @debug('A vertical margin for a column must be a property map or pixel values, or a number.');
+        }
     }
 }
 
 /*
- * Short description goes here.
- *
- * Usage:
- * @include ...
+ * This mixin applies top, bottom, left and right gutters to a column based on a unitless multiplier.
+ * A parameter of $padding-top: 2, for example, would give the column a top-padding that is
+ * 2 x the basic $gutter property map, set in your variables file.
+ * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
  */
-@mixin grid-column-spill($direction) {
+
+@mixin grid-column-padding($padding-left: 0.5, $padding-right: 0.5, $padding-top: 0, $padding-bottom: 0) {
+    @if($padding-top != none) {
+        @include fluid-property-map($property: padding-top, $values: $gutters, $multiplier: $padding-top);
+    }
+
+    @if($padding-bottom != none) {
+        @include fluid-property-map($property: padding-bottom, $values: $gutters, $multiplier: $padding-bottom);
+    }
+
+    @if($padding-left != none) {
+        @include fluid-property-map($property: padding-left, $values: $gutters, $multiplier: $padding-left);
+    }
+
+    @if($padding-right != none) {
+        @include fluid-property-map($property: padding-right, $values: $gutters, $multiplier: $padding-right);
+    }
+}
+
+/*
+ * This mixin 'spills' a left-most or right-most column to the edge of the viewport, enabling you to have an inset grid system while still being able to reach the edges of the viewport with your blocks. Accepts either 'left' or 'right'.
+ * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
+ */
+ @mixin grid-column-spill($direction) {
     @if ($direction != left and $direction != right and $direction != none) {
         @error('Invalid spill direction value: #{$direction}');
     }
@@ -170,7 +208,20 @@
         @error('$grid-padding-right must be set in order to spill a column to the right.');
     }
 
-    $opposite: get-opposite-direction($direction);
+    $opposite: null;
+    
+    @if($direction == left) {
+        $opposite: right;
+    } @else if($direction == right) {
+        $opposite: left;
+    } @else if($direction == top) {
+        $opposite: bottom;
+    } @else if($direction == bottom) {
+        $opposite: top;
+    } @else {
+        @error('Invalid direction: #{$direction}');
+    }
+
     $padding: if($direction == left, $grid-padding-left, $grid-padding-right);
     $distance: $padding;
 
@@ -191,20 +242,6 @@
     } @else {
         #{$direction}: 0;
         margin-#{$opposite}: 0;
-    }
-}
-
-@function get-opposite-direction($direction) {
-    @if($direction == left) {
-        @return right;
-    } @else if($direction == right) {
-        @return left;
-    } @else if($direction == top) {
-        @return bottom;
-    } @else if($direction == bottom) {
-        @return top;
-    } @else {
-        @error('Invalid direction: #{$direction}');
     }
 }
 
@@ -256,21 +293,8 @@
         left: 0;
         bottom: 0;
         right: 0;
-        // width: 1px;
-        // background-color: $colour-column-overlay;
         border: 0.5px solid $colour-column-overlay;
     }
-
-    // &__column:nth-child(#{$overlay-columns}):after {
-    //     display: block;
-    //     position: absolute;
-    //     content: '';
-    //     top: 0;
-    //     right: -0.5px;
-    //     bottom: 0;
-    //     width: 1px;
-    //     background-color: $colour-column-overlay;
-    // }
 
     &__column {
         .show-block-children & > *:after,
@@ -293,20 +317,6 @@
     &__column:nth-child(n + $overlay-columns) {
         display: none;
     }
-}
-
-@mixin grid-column-to-property($property, $width) {
-    $widths: ();
-
-    @each $key, $left-value in $grid-padding-left {
-        $right-value: map-get($grid-padding-right, $key);
-        $breakpoint: map-get($breakpoints, $key);
-        $calculated-width: ($breakpoint - $left-value - $right-value) * $width;
-
-        $widths: map-merge($widths, ($key: $calculated-width));
-    }
-
-    @include fluid-property-map($property, $widths);
 }
 
 // Validate variables

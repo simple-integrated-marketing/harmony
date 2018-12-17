@@ -1,5 +1,5 @@
 @mixin highlight-helper($label, $colour, $show-class) {
-    position: relative;
+    // position: relative;
 
     html#{$show-class} &:after {
         display: block;

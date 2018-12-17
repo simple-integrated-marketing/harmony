@@ -3,8 +3,14 @@
 
 // Normalize
 @import "./normalize";
+
+// Settings
 @import "./variables";
+
+// Core
 @import "./../core";
+
+// Local
 @import "./type";
 
 body {
@@ -62,7 +68,7 @@ body > * {
     @include grid;
 
     &__column {
-        @include grid-column(1/2);
+        @include grid-column($width: 1/2);
     }
 }
 
@@ -104,7 +110,7 @@ body > * {
     @include grid;
 
     &__column {
-        @include grid-column(1, $gutter-top: 1, $gutter-bottom: 1, $gutter-left: 1, $gutter-right: 1);
+        @include grid-column(1, $padding-top: 4, $padding-bottom: 4, $padding-left: 4, $padding-right: 4, $margin-bottom: 1);
         background-color: #333;
     }
 }
@@ -449,18 +455,19 @@ body > * {
     &__column {
         @include grid-column(1/2);
     }
-
+    
     &__background {
+        display: block;
         position: absolute;
         top: 0;
-        left: 0;
         bottom: 0;
+        left: 0;
         right: 0;
-        z-index: -1;
-        
+
         background-image: url('https://via.placeholder.com/1200/222222');
         background-position: center;
         background-size: cover;
+        z-index: -1;
     }
 
     &__column > * {
@@ -469,18 +476,18 @@ body > * {
 
     &__column:nth-child(odd) {
         @include grid-column($spill-direction: left);
-        
-        & > * {
-            @include grid-column-spill-reverse(left);
-        }
     }
 
     &__column:nth-child(even) {
         @include grid-column($spill-direction: right);
+    }
 
-        & > * {
-            @include grid-column-spill-reverse(right);
-        }
+    &__column:nth-child(even) > &__constrained {
+        @include grid-column-spill-reverse(right);
+    }
+
+    &__column:nth-child(odd) > &__constrained {
+        @include grid-column-spill-reverse(left);
     }
 }
 
@@ -563,6 +570,7 @@ body > * {
     border-left-style: solid;
     border-right-style: solid;
     border-color: #f00;
+    
     @include fluid-property-map(
         "border-left-width",
         (
