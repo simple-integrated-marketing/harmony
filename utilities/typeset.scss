@@ -1,3 +1,4 @@
+@import "./highlight-helper";
 /*
  * Typeset
  */
@@ -11,6 +12,8 @@
         // TODO accept maps for font-family, size, line-height and below
     line-height: #{$line-height}rem;
     $cap-height: map-get($cap-heights, $font-family);
+
+    @include highlight-helper('Typeset', $colour-baseline-grid, '.show-baselines');
     
     @if (not $cap-height) {
         @error ('cap-height metric for #{ $font-family } must be defined in $cap-heights.');
@@ -32,7 +35,7 @@
     margin-bottom: #{$baseline-push}rem;
     padding-top: #{$baseline-shift}rem;
 
-    html.show-guides & {
+    html.show-baselines & {
         background-image: linear-gradient(
             to bottom,
             $colour-baseline-grid 0,
