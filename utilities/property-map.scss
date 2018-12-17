@@ -1,4 +1,4 @@
-@import "./utilities/map";
+@import "./map";
 
 @mixin property-map($property, $values) {
     @if ($property == null) {
