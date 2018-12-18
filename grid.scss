@@ -297,6 +297,8 @@
 
     width: 100%; // Prevents collapse when flex parent
 
+    z-index: 10000000;
+
     html.show-grid & {
         visibility: visible;
     }
