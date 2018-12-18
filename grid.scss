@@ -14,7 +14,11 @@
  */
 @mixin grid(
     $nested: false,
-    $vertical-gutters: $vertical-gutters
+    $margin-top: $grid-container-default-margin-top,
+    $margin-bottom: $grid-container-default-margin-bottom,
+    $padding-top: $grid-container-default-padding-top,
+    $padding-bottom: $grid-container-default-padding-bottom,
+    $grid-column-margin-top: $grid-column-default-margin-top
 ) {
     display: flex;
     position: relative;
@@ -22,23 +26,30 @@
     flex-wrap: wrap;
     align-items: stretch;
 
+    $margin-top: - $grid-column-margin-top + $margin-top;
+
     @if($vertical-gutters) {
-        @include grid-vertical-margins($top: -1, $vertical-gutters: $vertical-gutters);
+        @include grid-vertical-metrics(
+            $margin-top: $margin-top,
+            $margin-bottom: $margin-bottom,
+            $padding-top: $padding-top,
+            $padding-bottom: $padding-bottom);
         
         & > * {
-            @include grid-vertical-margins($top: 1, $vertical-gutters: $vertical-gutters);
+            @include grid-vertical-metrics($margin-top: $grid-column-margin-top);
         }
+
     }
 
     @include grid-horizontal-padding($nested: $nested);
 
     @if($nested) {
         @include highlight-helper('Nested Grid', $colour-nested-grids, '.show-containers') {
-            @include grid-vertical-margins($top: 1, $vertical-gutters: $vertical-gutters);
+            @include grid-vertical-metrics($margin-top: $grid-column-margin-top);
         }
     } @else {
         @include highlight-helper('Grid', $colour-grids, '.show-containers') {
-            @include grid-vertical-margins($top: 1, $vertical-gutters: $vertical-gutters);
+            @include grid-vertical-metrics($margin-top: $grid-column-margin-top);
         }
     }
 }
@@ -169,12 +180,12 @@
     }
 }
 
-@mixin grid-vertical-margins($top: null, $bottom: null, $vertical-gutters: $vertical-gutters) {
-    $margins: (top: $top, bottom: $bottom);
+@mixin grid-vertical-metrics($padding-top: null, $padding-bottom: null, $margin-top: null, $margin-bottom: null) {
+    $properties: (padding-top: $padding-top, padding-bottom: $padding-bottom, margin-top: $margin-top, margin-bottom: $margin-bottom);
 
-    @each $side, $amount in $margins {
+    @each $key, $amount in $properties {
         @if type-of($amount) == "number" {
-            @include fluid-property-map($property: 'margin-#{$side}', $values: $vertical-gutters, $multiplier: $amount);
+            @include fluid-property-map($property: $key, $values: $vertical-gutters, $multiplier: $amount);
         } @else if $amount != null {
             @debug('A vertical margin for a column must be a unitless number.');
         }

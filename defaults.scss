@@ -31,6 +31,13 @@ $horizontal-gutters: (
 
 $vertical-gutters: $horizontal-gutters !default;
 
+$grid-container-default-padding-top: 0;
+$grid-container-default-padding-bottom: 0;
+$grid-container-default-margin-top: 0;
+$grid-container-default-margin-bottom: 0;
+
+$grid-column-default-margin-top: 1;
+
 // Whats this do?
 $font-sizes: (
     min: 12px,
