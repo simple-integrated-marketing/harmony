@@ -13,7 +13,8 @@
  * @include ...
  */
 @mixin grid(
-    $nested: false
+    $nested: false,
+    $vertical-gutters: $vertical-gutters
 ) {
     display: flex;
     position: relative;
@@ -22,13 +23,27 @@
     align-items: stretch;
 
     @if($vertical-gutters) {
-        @include grid-vertical-margins($top: -1);
+        @include grid-vertical-margins($top: -1, $vertical-gutters: $vertical-gutters);
         
         & > * {
-            @include grid-vertical-margins($top: 1);
+            @include grid-vertical-margins($top: 1, $vertical-gutters: $vertical-gutters);
         }
     }
 
+    @include grid-horizontal-padding($nested: $nested);
+
+    @if($nested) {
+        @include highlight-helper('Nested Grid', $colour-nested-grids, '.show-containers') {
+            @include grid-vertical-margins($top: 1, $vertical-gutters: $vertical-gutters);
+        }
+    } @else {
+        @include highlight-helper('Grid', $colour-grids, '.show-containers') {
+            @include grid-vertical-margins($top: 1, $vertical-gutters: $vertical-gutters);
+        }
+    }
+}
+
+@mixin grid-horizontal-padding($nested: false) {
     @if($nested) {
         @if(is-valid-property-map($horizontal-gutters)) {
             @include fluid-property-map(
@@ -55,14 +70,6 @@
                 $property: "padding-right",
                 $values: $grid-padding-right
             );
-        }
-    }
-    
-    @if($nested) {
-        @include highlight-helper('Nested Grid', $colour-nested-grids, '.show-containers');
-    } @else {
-        @include highlight-helper('Grid', $colour-grids, '.show-containers') {
-            @include grid-vertical-margins($top: 1);
         }
     }
 }
@@ -94,7 +101,7 @@
     @if($horizontal-gutters != null) {
 
         // Gutters
-        @include grid-column-padding($padding-left: $padding-left, $padding-right: $padding-right);
+        @include grid-column-horizontal-padding($padding-left: $padding-left, $padding-right: $padding-right);
 
         // Margins
         @if($spill-direction != null and ($margin-left != null or $margin-right != null)) {
@@ -106,7 +113,7 @@
     }
 
     @if($vertical-gutters != null) {
-        @include grid-column-padding($padding-top: $padding-top, $padding-bottom: $padding-bottom);
+        @include grid-column-horizontal-padding($padding-top: $padding-top, $padding-bottom: $padding-bottom);
     }
     
     // Spill
@@ -162,7 +169,7 @@
     }
 }
 
-@mixin grid-vertical-margins($top: null, $bottom: null) {
+@mixin grid-vertical-margins($top: null, $bottom: null, $vertical-gutters: $vertical-gutters) {
     $margins: (top: $top, bottom: $bottom);
 
     @each $side, $amount in $margins {
@@ -181,7 +188,7 @@
  * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
  */
 
-@mixin grid-column-padding($padding-left: 0.5, $padding-right: 0.5, $padding-top: 0, $padding-bottom: 0) {
+@mixin grid-column-horizontal-padding($padding-left: 0.5, $padding-right: 0.5, $padding-top: 0, $padding-bottom: 0) {
     @if($padding-top != none) {
         @include fluid-property-map($property: padding-top, $values: $vertical-gutters, $multiplier: $padding-top);
     }

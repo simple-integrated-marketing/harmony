@@ -7,11 +7,11 @@
         content: '#{$label}';
         position: absolute;
         padding: 4px;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        top: 0;
-        box-shadow: inset 0px 0px 0px 2px #{$colour};
+        left: 2px;
+        bottom: 2px;
+        right: 2px;
+        top: 2px;
+        outline: 2px solid $colour;
         font-weight: bold;
         letter-spacing: 0.1em;
         color: lighten(rgba($colour, 100), 25);

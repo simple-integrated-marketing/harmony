@@ -19,7 +19,7 @@ body {
 }
 
 body > * {
-    margin-bottom: 6rem;
+    // margin-bottom: 6rem;
 }
 
 .demo-title {
@@ -58,7 +58,7 @@ body > * {
 
 .one-column-demo {
     @include grid;
-
+    
     &__column {
         @include grid-column(1);
     }
