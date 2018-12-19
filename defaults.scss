@@ -2,7 +2,6 @@
 // Default Variables
 // =============================================================================
 
-// Whats this do?
 $breakpoints: (
     min: 320px,
     xs: 340px,
@@ -14,29 +13,26 @@ $breakpoints: (
     xxxl: 2200px
 ) !default;
 
-// Whats this do?
-$grid-padding-left: (
+$default-container-padding-left: (
     min: 16px,
     xxxl: 400px
 ) !default;
 
-// Whats this do?
-$grid-padding-right: $grid-padding-left !default;
+$default-container-padding-right: $default-container-padding-left !default;
 
-// Whats this do?
-$horizontal-gutters: (
+$default-horizontal-gutters: (
     min: 8px,
     xxxl: 16px
 ) !default;
 
-$vertical-gutters: $horizontal-gutters !default;
+$default-vertical-gutters: $default-horizontal-gutters !default;
 
-$grid-container-default-padding-top: 0 !default;
-$grid-container-default-padding-bottom: 0 !default;
-$grid-container-default-margin-top: 0 !default;
-$grid-container-default-margin-bottom: 0 !default;
-
-$grid-column-default-margin-top: 0 !default;
+$default-container-padding-top: 0 !default;
+$default-container-padding-bottom: 0 !default;
+$default-container-margin-top: 0 !default;
+$default-container-margin-bottom: 0 !default;
+$default-column-margin-top: 0 !default;
+$default-column-margin-bottom: 0 !default;
 
 // Whats this do?
 $font-sizes: (
@@ -49,7 +45,7 @@ $cap-heights: (
     sans: 0.7
 ) !default;
 
-$overlay-columns: 12 !default;
+$overlay-columns: 24 !default;
 
 // Whats this do?
 $colour-baseline-grid: rgba(#0f0, 0.75) !default;

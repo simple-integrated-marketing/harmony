@@ -16,12 +16,12 @@ $grid-padding-left: (
 
 $grid-padding-right: $grid-padding-left;
 
-$horizontal-gutters: (
+$default-horizontal-gutters: (
     sm: 8px,
     xxxl: 48px
 );
 
-$vertical-gutters: $horizontal-gutters;
+$default-vertical-gutters: $default-horizontal-gutters;
 
 $font-sizes: (
     min: 12px,
@@ -32,11 +32,5 @@ $cap-heights: (
     Roboto: 0.7
 );
 
-$overlay-columns: 24;
-
-$grid-container-default-padding-top: 0;
-$grid-container-default-padding-bottom: 0;
-$grid-container-default-margin-top: 0;
-$grid-container-default-margin-bottom: 0;
-
-$grid-column-default-margin-top: 0;
+$default-container-margin-bottom: 1;
+$default-column-margin-top: 1;
