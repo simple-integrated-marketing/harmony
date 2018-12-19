@@ -1,6 +1,4 @@
 @mixin highlight-helper($label, $colour, $show-class) {
-    // position: relative;
-
     html#{$show-class} &:after {
         display: block;
         text-align: right;
