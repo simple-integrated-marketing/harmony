@@ -244,7 +244,7 @@ body {
 }
 
 .nested-grid-demo-nested-grid {
-    @include grid($nested: true);
+    @include grid($nested: true, $margin-top: 0);
 
     &__column {
         @include grid-column($width: 1/2);

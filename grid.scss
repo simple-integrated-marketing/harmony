@@ -45,7 +45,7 @@
     // This is to ensure that all columns within a container are evenly spaced along the vertical axis, with the top-most columns'
     // top-margins negated by the negative margin of the grid container. Otherwise, headaches happen.
     
-    $margin-top: - $column-margin-top + $margin-top;
+    $margin-top: $margin-top - $column-margin-top;
 
     @include grid-container-vertical-metrics(
         $margin-top: $margin-top,
