@@ -109,6 +109,36 @@
     }
 }
 
+// TODO Rename this to something more appropriate that can sit alongside grid-column()
+@mixin grid-column-new($properties: null) {
+    $width-argument: ();
+    $margin-left-argument: ();
+    $margin-right-argument: ();
+    
+    @each $key, $value in $properties {
+        @if(map-has-key($value, 'width')) {
+            $width-argument: map-merge($width-argument, (#{$key}: map-get($value, 'width')));
+            @debug('width:', type-of(map-get($value, 'width')));
+        }
+
+        @if(map-has-key($value, 'margin-left')) {
+            $margin-left-argument: map-merge($margin-left-argument, (#{$key}: map-get($value, 'margin-left')));
+            @debug('margin-left:', type-of(map-get($value, 'margin-left')));
+        }
+
+        @if(map-has-key($value, 'margin-right')) {
+            $margin-right-argument: map-merge($margin-left-argument, (#{$key}: map-get($value, 'margin-right')));
+            @debug('margin-right:', type-of(map-get($value, 'margin-right')));
+        }
+    }
+
+    $width-argument: if(length($width-argument) > 0, $width-argument, null);
+    $margin-left-argument: if(length($margin-left-argument) > 0, $margin-left-argument, null);
+    $margin-right-argument: if(length($margin-right-argument) > 0, $margin-right-argument, null);
+
+    @include grid-column($width: $width-argument, $margin-left: $margin-left-argument, $margin-right: $margin-right-argument);
+}
+
 /*
  * TODO Docs
  */
@@ -134,14 +164,26 @@
 
     @if($default-horizontal-gutters != null) {
         // Gutters
-        @include grid-column-horizontal-padding($padding-left: $padding-left, $padding-right: $padding-right);
+        @if($padding-left != null) {
+            @include grid-column-horizontal-padding($left: $padding-left);
+        }
+
+        @if($padding-right != null) {
+            @include grid-column-horizontal-padding($right: $padding-right);
+        }
 
         // Margins
         @if($spill-direction != null and ($margin-left != null or $margin-right != null)) {
-            @error('Margins and spill-direction cannot be set simultaneously.');
+            @error('Horizontal margins and spill-direction cannot be set simultaneously on a column.');
         }
 
-        @include grid-column-horizontal-margins($left: $margin-left, $right: $margin-right);
+        @if($margin-left != null) {
+            @include grid-column-horizontal-margins($left: $margin-left);
+        }
+
+        @if($margin-right != null) {
+            @include grid-column-horizontal-margins($right: $margin-right);
+        }
 
         // Spill
         @if $spill-direction != null {
@@ -185,7 +227,7 @@
  * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
  */
 
- @mixin grid-column-horizontal-margins($left: null, $right: null) {
+@mixin grid-column-horizontal-margins($left: null, $right: null) {
     $margins: (left: $left, right: $right);
 
     @each $side, $amount in $margins {
@@ -241,21 +283,21 @@
  * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
  */
 
-@mixin grid-column-horizontal-padding($padding-left: 0.5, $padding-right: 0.5, $padding-top: 0, $padding-bottom: 0) {
-    @if($padding-top != none) {
-        @include fluid-property-map($property: padding-top, $values: $default-vertical-gutters, $multiplier: $padding-top);
+@mixin grid-column-horizontal-padding($left: 0.5, $right: 0.5, $top: 0, $bottom: 0) {
+    @if($top != none) {
+        @include fluid-property-map($property: padding-top, $values: $default-vertical-gutters, $multiplier: $top);
     }
 
-    @if($padding-bottom != none) {
-        @include fluid-property-map($property: padding-bottom, $values: $default-vertical-gutters, $multiplier: $padding-bottom);
+    @if($bottom != none) {
+        @include fluid-property-map($property: padding-bottom, $values: $default-vertical-gutters, $multiplier: $bottom);
     }
 
-    @if($padding-left != none) {
-        @include fluid-property-map($property: padding-left, $values: $default-horizontal-gutters, $multiplier: $padding-left);
+    @if($left != none) {
+        @include fluid-property-map($property: padding-left, $values: $default-horizontal-gutters, $multiplier: $left);
     }
 
-    @if($padding-right != none) {
-        @include fluid-property-map($property: padding-right, $values: $default-horizontal-gutters, $multiplier: $padding-right);
+    @if($right != none) {
+        @include fluid-property-map($property: padding-right, $values: $default-horizontal-gutters, $multiplier: $right);
     }
 }
 

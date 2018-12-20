@@ -2,7 +2,7 @@
 
 @function is-valid-property-map($map) {
     @return
-        $map and
+        $map != null and
         type-of($map) == "map" and
         length($map) > 0 and
         map-keys-correspond-to-keys-in-other-map($map, $breakpoints);
@@ -91,6 +91,11 @@
     $output: ();
 
     @each $key, $value in $map {
+        @if(type-of($value) != 'number') {
+            @debug($value, type-of($value));
+            @error('Values passed to map-percentage (#{$value}) must be a number.')
+        }
+
         $output: map-merge($output, ($key: percentage($value)));
     }
 
