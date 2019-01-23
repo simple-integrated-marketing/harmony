@@ -1,5 +1,5 @@
 @mixin type-base {
-    @include typeset($font-family: "Roboto", $size: 18, $line-height: 3, $below: 2);
+    @include typeset($font-family: "Roboto", $size: 18, $line-height: 3, $above: -2, $below: 0);
 }
 
 @mixin type-a {

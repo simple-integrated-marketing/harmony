@@ -7,12 +7,13 @@
     $font-family,
     $size,
     $line-height,
-    $below) {
+    $above: 0,
+    $below: 0) {
 
-        // TODO accept maps for font-family, size, line-height and below
+    // TODO accept maps for font-family, size, line-height and below
     line-height: #{$line-height}rem;
     $cap-height: map-get($cap-heights, $font-family);
-
+    
     @include highlight-helper('Typeset', $colour-baseline-grid, '.show-baselines');
     
     @if (not $cap-height) {
@@ -23,8 +24,7 @@
 
     $rootsize: 16; // This is the base grid unit we use in Figma.
     $baseline-shift: #{(
-            $size / 2 * (($line-height * $rootsize / $size) - $cap-height)
-        ) / $rootsize + 0.00001};
+            $size / 2 * (($line-height * $rootsize / $size) - $cap-height)) / $rootsize + 0.00001};
     $baseline-push: #{$below -
         (
             ($size / 2 * (($line-height * $rootsize / $size) - $cap-height)) /
@@ -32,6 +32,7 @@
         )};
 
     font-size: #{$size / $rootsize}rem;
+    margin-top: $above * 1rem;
     margin-bottom: #{$baseline-push}rem;
     padding-top: #{$baseline-shift}rem;
 
