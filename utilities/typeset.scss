@@ -38,11 +38,11 @@
 
     html.show-baselines & {
         background-image: linear-gradient(
-            to bottom,
             $colour-baseline-grid 0,
             transparent 1px
         );
         background-repeat: repeat-y;
         background-size: 100% 1rem;
+        background-position: 0 #{ - $above}rem;
     }
 }
