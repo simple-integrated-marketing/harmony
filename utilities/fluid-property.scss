@@ -17,8 +17,8 @@
     $max-value,
     $min-breakpoint,
     $max-breakpoint,
-    $applyBelow: true,
-    $applyAbove: true,
+    $apply-below: true,
+    $apply-above: true,
     $multiplier: 1
 ) {
     @if (not unitless($min-breakpoint)) {
@@ -29,29 +29,36 @@
         @error '$max-breakpoint must be unitless.';
     }
 
-    $difference: ($max-value - $min-value) / ($max-breakpoint - $min-breakpoint) * 100vw;
-    $adder: ($min-value * $max-breakpoint - $max-value * $min-breakpoint) / ($max-breakpoint - $min-breakpoint) + 0px;
+    $min-value: $min-value * $multiplier;
+    $max-value: $max-value * $multiplier;
+
+    $difference: ($max-value - $min-value) / ($max-breakpoint - $min-breakpoint) *
+        100vw;
+    $adder: ($min-value * $max-breakpoint - $max-value * $min-breakpoint) /
+        ($max-breakpoint - $min-breakpoint) + 0px;
     $min-breakpoint: $min-breakpoint + 0px;
     $max-breakpoint: $max-breakpoint + 0px;
-    $min-value: $min-value + 0px;
-    $max-value: $max-value + 0px;
 
-    // If $applyBelow is true, the lower value will also apply below the $min-breakpoint breakpoint.
-    @if $applyBelow {
+    // If $apply-below is true, the lower value will also apply below the $min-breakpoint breakpoint.
+    @if $apply-below {
         @media (max-width: #{$min-breakpoint}) {
-            #{$property}: calc(#{$min-value} * #{$multiplier});
+            #{$property}: #{$min-value}px;
         }
     }
 
-    // If $applyAbove is true, the higher value will also apply above the $max-breakpoint breakpoint.
-    @if $applyAbove {
+    // If $apply-above is true, the higher value will also apply above the $max-breakpoint breakpoint.
+    @if $apply-above {
         @media (min-width: #{$max-breakpoint - 1}) {
-            #{$property}: calc(#{$max-value} * #{$multiplier});
+            #{$property}: #{$max-value}px;
         }
     }
 
     // Apply the tween calculation from the $min-breakpoint to $max-breakpoint breakpoints.
     @media (min-width: #{$min-breakpoint}) and (max-width: #{$max-breakpoint - 1}) {
-        #{$property}: calc((#{$difference} + #{$adder}) * #{$multiplier});
+        @if ($multiplier != 0) {
+            #{$property}: calc(#{$difference} + #{$adder});
+        } @else {
+            #{$property}: 0;
+        }
     }
 }
