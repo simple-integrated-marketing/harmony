@@ -7,13 +7,9 @@
  * Usage:
  * @include ...
  */
- @mixin fluid-property-map(
-    $property: null,
-    $values: null,
-    $multiplier: 1
-) {
+@mixin fluid-property-map($property: null, $values: null, $multiplier: 1) {
     $test: validate-property-map($values);
-    
+
     $selected-breakpoint-ids: map-keys($values);
     $selected-breakpoint-values: map-values($values);
 
@@ -35,12 +31,8 @@
         $min-breakpoint-id: nth($selected-breakpoint-ids, $i);
         $max-breakpoint-id: nth($selected-breakpoint-ids, $i + 1);
 
-        $min-breakpoint: strip-unit(
-            map-get($breakpoints, $min-breakpoint-id)
-        );
-        $max-breakpoint: strip-unit(
-            map-get($breakpoints, $max-breakpoint-id)
-        );
+        $min-breakpoint: strip-unit(map-get($breakpoints, $min-breakpoint-id));
+        $max-breakpoint: strip-unit(map-get($breakpoints, $max-breakpoint-id));
 
         @if ($max-breakpoint == null) {
             @error 'The value "#{$max-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
@@ -49,15 +41,15 @@
         @if ($min-breakpoint == null) {
             @error 'The value "#{$min-breakpoint-id}" doesn\'t correspond to a breakpoint defined in $breakpoints.';
         }
-        
+
         @include fluid-property(
             $property: $property,
             $min-value: $min-value,
             $max-value: $max-value,
             $min-breakpoint: $min-breakpoint,
             $max-breakpoint: $max-breakpoint,
-            $applyAbove: $is-last,
-            $applyBelow: $is-first,
+            $apply-above: $is-last,
+            $apply-below: $is-first,
             $multiplier: $multiplier
         );
     }
