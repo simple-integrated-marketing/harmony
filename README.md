@@ -1,5 +1,7 @@
 # Harmony
 
+[![npm version](https://badge.fury.io/js/harmony.svg)](https://www.npmjs.com/package/harmony)
+
 🎶🙌 An strong opinionated spring board for our website projects.
 
 ## Features
