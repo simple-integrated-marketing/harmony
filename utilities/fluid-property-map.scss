@@ -12,6 +12,10 @@
 
     $selected-breakpoint-ids: map-keys($values);
     $selected-breakpoint-values: map-values($values);
+    
+    @if (not unitless($multiplier)) {
+        @error('Multiplier must be a unitless numeric value.');
+    }
 
     @if ($property == null) {
         @error 'Property must be specified.';
