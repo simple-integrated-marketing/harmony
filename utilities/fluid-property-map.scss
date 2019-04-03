@@ -13,7 +13,7 @@
     $selected-breakpoint-ids: map-keys($values);
     $selected-breakpoint-values: map-values($values);
     
-    @if (not unitless($multiplier)) {
+    @if (not unitless($multiplier) or type-of($multiplier) != 'number') {
         @error('Multiplier must be a unitless numeric value.');
     }
 
