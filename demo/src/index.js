@@ -17,4 +17,4 @@ import './index.scss';
  * Scripts
  */
 
-import './../grid-tools';
+import '../../src/grid-tools';
