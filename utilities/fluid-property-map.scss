@@ -1,5 +1,5 @@
-@import "./map";
-@import "./fluid-property";
+@import './map';
+@import './fluid-property';
 
 /*
  * Short description goes here.
@@ -12,9 +12,9 @@
 
     $selected-breakpoint-ids: map-keys($values);
     $selected-breakpoint-values: map-values($values);
-    
+
     @if (not unitless($multiplier) or type-of($multiplier) != 'number') {
-        @error('Multiplier must be a unitless numeric value.');
+        @error ('Multiplier must be a unitless numeric value.');
     }
 
     @if ($property == null) {
