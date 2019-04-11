@@ -1,6 +1,6 @@
-@import "./utilities/map";
-@import "./utilities/strip-unit";
-@import "./utilities/highlight-helper";
+@import './utilities/map';
+@import './utilities/strip-unit';
+@import './utilities/highlight-helper';
 
 // =============================================================================
 // Grid
@@ -72,16 +72,16 @@
     // Highlight helpers are used to highlight grid containers in dev mode. For more information, consult grid-tools.js.
     @if ($nested) {
         @include highlight-helper(
-            "Nested Grid",
+            'Nested Grid',
             $colour-nested-grids,
-            ".show-containers"
+            '.show-containers'
         ) {
             @include grid-container-vertical-metrics(
                 $margin-top: $column-margin-top
             );
         }
     } @else {
-        @include highlight-helper("Grid", $colour-grids, ".show-containers") {
+        @include highlight-helper('Grid', $colour-grids, '.show-containers') {
             @include grid-container-vertical-metrics(
                 $margin-top: $column-margin-top
             );
@@ -101,12 +101,12 @@
     @if ($nested) {
         @if (is-valid-property-map($default-horizontal-gutters)) {
             @include fluid-property-map(
-                $property: "margin-left",
+                $property: 'margin-left',
                 $values: $default-horizontal-gutters,
                 $multiplier: -0.5
             );
             @include fluid-property-map(
-                $property: "margin-right",
+                $property: 'margin-right',
                 $values: $default-horizontal-gutters,
                 $multiplier: -0.5
             );
@@ -114,14 +114,14 @@
     } @else {
         @if (is-valid-property-map($padding-left)) {
             @include fluid-property-map(
-                $property: "padding-left",
+                $property: 'padding-left',
                 $values: $padding-left
             );
         }
 
         @if (is-valid-property-map($padding-right)) {
             @include fluid-property-map(
-                $property: "padding-right",
+                $property: 'padding-right',
                 $values: $padding-right
             );
         }
@@ -135,28 +135,25 @@
     $margin-right-argument: ();
 
     @each $key, $value in $properties {
-        @if (map-has-key($value, "width")) {
+        @if (map-has-key($value, 'width')) {
             $width-argument: map-merge(
                 $width-argument,
-                (#{$key}: map-get($value, "width"))
+                (#{$key}: map-get($value, 'width'))
             );
-            @debug ("width:", type-of(map-get($value, "width")));
         }
 
-        @if (map-has-key($value, "margin-left")) {
+        @if (map-has-key($value, 'margin-left')) {
             $margin-left-argument: map-merge(
                 $margin-left-argument,
-                (#{$key}: map-get($value, "margin-left"))
+                (#{$key}: map-get($value, 'margin-left'))
             );
-            @debug ("margin-left:", type-of(map-get($value, "margin-left")));
         }
 
-        @if (map-has-key($value, "margin-right")) {
+        @if (map-has-key($value, 'margin-right')) {
             $margin-right-argument: map-merge(
                 $margin-left-argument,
-                (#{$key}: map-get($value, "margin-right"))
+                (#{$key}: map-get($value, 'margin-right'))
             );
-            @debug ("margin-right:", type-of(map-get($value, "margin-right")));
         }
     }
 
@@ -243,13 +240,13 @@
     }
 
     // Helpers
-    @include highlight-helper("grid-column", $colour-columns, ".show-columns");
+    @include highlight-helper('grid-column', $colour-columns, '.show-columns');
 
     & > * {
         @include highlight-helper(
-            "grid-column > *",
+            'grid-column > *',
             $colour-blocks,
-            ".show-block-children"
+            '.show-block-children'
         );
     }
 }
@@ -264,8 +261,8 @@
     @if (is-valid-property-map($width)) {
         $width: map-strip-unit($width);
         $width: map-percentage($width);
-        @include property-map("width", $width);
-    } @else if type-of($width) == "number" {
+        @include property-map('width', $width);
+    } @else if type-of($width) == 'number' {
         width: percentage($width);
     } @else {
         @error ("$width must be either a number or a valid property map.");
@@ -281,19 +278,19 @@
 @mixin grid-column-horizontal-margins($left: null, $right: null) {
     $margins: (
         left: $left,
-        right: $right
+        right: $right,
     );
 
     @each $side, $amount in $margins {
         @if (is-valid-property-map($amount)) {
             $amount: map-strip-unit($amount);
             $amount: map-percentage($amount);
-            @include property-map("margin-#{$side}", $amount);
-        } @else if type-of($amount) == "number" {
+            @include property-map('margin-#{$side}', $amount);
+        } @else if type-of($amount) == 'number' {
             margin-#{$side}: percentage($amount);
         } @else if $amount != null {
             @debug (
-                "A horizontal margin for a column must be a property map of fractions, or a number."
+                'A horizontal margin for a column must be a property map of fractions, or a number.'
             );
         }
     }
@@ -349,12 +346,12 @@
         padding-top: $padding-top,
         padding-bottom: $padding-bottom,
         margin-top: $margin-top,
-        margin-bottom: $margin-bottom
+        margin-bottom: $margin-bottom,
     );
 
     // Same as each loop used in grid-container-vertical-metrics-absolute.
     @each $key, $amount in $properties {
-        @if type-of($amount) == "number" {
+        @if type-of($amount) == 'number' {
             @include fluid-property-map(
                 $property: $key,
                 $values: $default-vertical-gutters,
@@ -362,7 +359,7 @@
             );
         } @else if $amount != null {
             @debug (
-                "A vertical margin for a column must be a unitless number."
+                'A vertical margin for a column must be a unitless number.'
             );
         }
     }
@@ -446,7 +443,7 @@
 
         > * {
             @include fluid-property-map(
-                "margin-#{$opposite}",
+                'margin-#{$opposite}',
                 $values: $distance,
                 $multiplier: -1
             );
@@ -473,9 +470,9 @@
     );
 
     @if ($direction == left) {
-        @include fluid-property-map("padding-left", $distance);
+        @include fluid-property-map('padding-left', $distance);
     } @else if($direction == right) {
-        @include fluid-property-map("padding-right", $distance);
+        @include fluid-property-map('padding-right', $distance);
     }
 }
 
@@ -522,7 +519,7 @@
     &__column:before {
         display: block;
         position: absolute;
-        content: "";
+        content: '';
         top: 0;
         left: 0;
         bottom: 0;
@@ -539,7 +536,7 @@
 
     &__column > div {
         display: block;
-        content: "";
+        content: '';
         top: 0;
         bottom: 0;
         left: 0;
