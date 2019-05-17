@@ -2,13 +2,11 @@
 
 [![npm version](https://badge.fury.io/js/harmony.svg)](https://www.npmjs.com/package/harmony)
 
-🎶🙌 An opinionated spring-board for website projects.
-
-Documentation coming soon.
+🎶🙌 A grid system and typography baseline grid based 100% on fluid properties.
 
 ## Features
 
-- Highly customisable global config for body padding, grid gutters, font-sizes and character heights
+- Highly customisable global config for body and grid system metrics, font-sizes and baseline grid-locked line heights
 - Modern IE10+ CSS normalization
 - Built with vertical-rhythm in mind
 - Minimal CSS inheritance chain
@@ -28,6 +26,6 @@ To use these tools, import the script in your JS:<br>
 `import 'harmony/grid-tools';`
 
 ## Contributors:
-[Aaron Mccaffery](https://github.com/aaronmccaffery) and [@benrogerson](https://twitter.com/benrogerson).
+[@aaronmccaffery](https://github.com/aaronmccaffery) and [@benrogerson](https://twitter.com/benrogerson).
 
-Created by [Simple](https://simple.com.au/).
+Created by [Simple](https://simple.com.au/) and [Anagraph](https://anagraph.com.au/).
