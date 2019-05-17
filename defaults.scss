@@ -20,19 +20,25 @@ $default-container-padding-left: (
 
 $default-container-padding-right: $default-container-padding-left !default;
 
-$default-horizontal-gutters: (
+$default-horizontal-base-unit: (
     min: 8px,
     xxxl: 16px
 ) !default;
 
-$default-vertical-gutters: $default-horizontal-gutters !default;
+$default-vertical-base-unit: $default-horizontal-base-unit !default;
 
 $default-container-padding-top: 0 !default;
 $default-container-padding-bottom: 0 !default;
 $default-container-margin-top: 0 !default;
 $default-container-margin-bottom: 0 !default;
+
 $default-column-margin-top: 0 !default;
 $default-column-margin-bottom: 0 !default;
+
+$default-column-padding-top: 0.5 !default;
+$default-column-padding-bottom: 0.5 !default;
+$default-column-padding-left: 0.5 !default;
+$default-column-padding-right: 0.5 !default;
 
 // Whats this do?
 $font-sizes: (
@@ -45,7 +51,7 @@ $cap-heights: (
     sans: 0.7
 ) !default;
 
-$overlay-columns: 24 !default;
+$overlay-columns: 12 !default;
 
 // Whats this do?
 $colour-baseline-grid: rgba(#0f0, 0.75) !default;

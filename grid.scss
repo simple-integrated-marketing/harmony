@@ -3,6 +3,18 @@
 @import './utilities/highlight-helper';
 
 // =============================================================================
+// Deprecation errors
+// =============================================================================
+
+@if variable-exists(default-horizontal-gutters) {
+    @error ('$default-horizontal-gutters is no longer in use. Please rename to $default-horizontal-base-unit.');
+}
+
+@if variable-exists(default-vertical-gutters) {
+    @error ('$default-vertical-gutters is no longer in use. Please rename to $default-vertical-base-unit.');
+}
+
+// =============================================================================
 // Grid
 // =============================================================================
 
@@ -27,6 +39,8 @@
     $margin-bottom: $default-container-margin-bottom,
     $padding-top: $default-container-padding-top,
     $padding-bottom: $default-container-padding-bottom,
+    $column-padding-top: $default-column-padding-top,
+    $column-padding-bottom: $default-column-padding-bottom,
     $column-margin-top: $default-column-margin-top,
     $column-margin-bottom: $default-column-margin-bottom,
     $padding-right: $default-container-padding-right,
@@ -47,6 +61,7 @@
     $margin-top: $margin-top - $column-margin-top;
 
     @include grid-container-vertical-metrics(
+        $nested: $nested,
         $margin-top: $margin-top,
         $margin-bottom: $margin-bottom,
         $padding-top: $padding-top,
@@ -55,6 +70,8 @@
 
     & > * {
         @include grid-column-vertical-metrics(
+            $padding-top: if($column-padding-top != null, $column-padding-top, $default-column-padding-top),
+            $padding-bottom: if($column-padding-bottom != null, $column-padding-bottom, $default-column-padding-bottom),
             $margin-top: $column-margin-top,
             $margin-bottom: $column-margin-bottom
         );
@@ -62,7 +79,7 @@
 
     // Horizontal padding and margins are set here.
     // For top-most grid containers, the left and right *padding* are set from $default-container-padding-left and $default-container-padding-right.
-    // For nested grid containers, the left and right *margins* are set from $default-horizontal-gutters.
+    // For nested grid containers, the left and right *margins* are set from $default-horizontal-base-unit.
     @include grid-container-horizontal-metrics(
         $nested: $nested,
         $padding-left: $padding-left,
@@ -99,15 +116,15 @@
     $padding-right: $default-container-padding-right
 ) {
     @if ($nested) {
-        @if (is-valid-property-map($default-horizontal-gutters)) {
+        @if (is-valid-property-map($default-horizontal-base-unit)) {
             @include fluid-property-map(
                 $property: 'margin-left',
-                $values: $default-horizontal-gutters,
+                $values: $default-horizontal-base-unit,
                 $multiplier: -0.5
             );
             @include fluid-property-map(
                 $property: 'margin-right',
-                $values: $default-horizontal-gutters,
+                $values: $default-horizontal-base-unit,
                 $multiplier: -0.5
             );
         }
@@ -128,54 +145,6 @@
     }
 }
 
-// TODO Rename this to something more appropriate that can sit alongside grid-column()
-@mixin grid-column-new($properties: null) {
-    $width-argument: ();
-    $margin-left-argument: ();
-    $margin-right-argument: ();
-
-    @each $key, $value in $properties {
-        @if (map-has-key($value, 'width')) {
-            $width-argument: map-merge(
-                $width-argument,
-                (#{$key}: map-get($value, 'width'))
-            );
-        }
-
-        @if (map-has-key($value, 'margin-left')) {
-            $margin-left-argument: map-merge(
-                $margin-left-argument,
-                (#{$key}: map-get($value, 'margin-left'))
-            );
-        }
-
-        @if (map-has-key($value, 'margin-right')) {
-            $margin-right-argument: map-merge(
-                $margin-left-argument,
-                (#{$key}: map-get($value, 'margin-right'))
-            );
-        }
-    }
-
-    $width-argument: if(length($width-argument) > 0, $width-argument, null);
-    $margin-left-argument: if(
-        length($margin-left-argument) > 0,
-        $margin-left-argument,
-        null
-    );
-    $margin-right-argument: if(
-        length($margin-right-argument) > 0,
-        $margin-right-argument,
-        null
-    );
-
-    @include grid-column(
-        $width: $width-argument,
-        $margin-left: $margin-left-argument,
-        $margin-right: $margin-right-argument
-    );
-}
-
 /*
  * TODO Docs
  */
@@ -184,10 +153,10 @@
     $width: null,
     $margin-left: null,
     $margin-right: null,
-    $padding-left: 0.5,
-    $padding-right: 0.5,
-    $padding-top: null,
-    $padding-bottom: null,
+    $padding-left: $default-column-padding-left,
+    $padding-right: $default-column-padding-right,
+    $padding-top: $default-column-padding-top,
+    $padding-bottom: $default-column-padding-bottom,
     $spill-direction: null
 ) {
     display: block;
@@ -199,7 +168,7 @@
         @include grid-column-width($width);
     }
 
-    @if ($default-horizontal-gutters != null) {
+    @if ($default-horizontal-base-unit != null) {
         // Gutters
         @if ($padding-left != null) {
             @include grid-column-horizontal-padding($left: $padding-left);
@@ -219,11 +188,11 @@
         }
 
         @if ($margin-left != null) {
-            @include grid-column-horizontal-margins($left: $margin-left);
+            @include grid-column-horizontal-metrics($left: $margin-left);
         }
 
         @if ($margin-right != null) {
-            @include grid-column-horizontal-margins($right: $margin-right);
+            @include grid-column-horizontal-metrics($right: $margin-right);
         }
 
         // Spill
@@ -232,7 +201,7 @@
         }
     }
 
-    @if ($default-vertical-gutters != null) {
+    @if ($default-vertical-base-unit != null) {
         @include grid-container-vertical-metrics(
             $padding-top: $padding-top,
             $padding-bottom: $padding-bottom
@@ -275,7 +244,7 @@
  * NOTE: This mixin should not be used directly. Instead, access it by passing the above values to the grid-column mixin.
  */
 
-@mixin grid-column-horizontal-margins($left: null, $right: null) {
+@mixin grid-column-horizontal-metrics($left: null, $right: null) {
     $margins: (
         left: $left,
         right: $right,
@@ -301,12 +270,14 @@
  */
 
 @mixin grid-container-vertical-metrics(
+    $nested: false,
     $padding-top: null,
     $padding-bottom: null,
     $margin-top: null,
     $margin-bottom: null
 ) {
     @include grid-vertical-metrics(
+        $nested: $nested,
         $padding-top: $padding-top,
         $padding-bottom: $padding-bottom,
         $margin-top: $margin-top,
@@ -337,6 +308,7 @@
  */
 
 @mixin grid-vertical-metrics(
+    $nested: false,
     $padding-top: null,
     $padding-bottom: null,
     $margin-top: null,
@@ -346,7 +318,7 @@
         padding-top: $padding-top,
         padding-bottom: $padding-bottom,
         margin-top: $margin-top,
-        margin-bottom: $margin-bottom,
+        margin-bottom: $margin-bottom
     );
 
     // Same as each loop used in grid-container-vertical-metrics-absolute.
@@ -354,7 +326,7 @@
         @if type-of($amount) == 'number' {
             @include fluid-property-map(
                 $property: $key,
-                $values: $default-vertical-gutters,
+                $values: $default-vertical-base-unit,
                 $multiplier: $amount
             );
         } @else if $amount != null {
@@ -376,7 +348,7 @@
     @if ($left != none) {
         @include fluid-property-map(
             $property: padding-left,
-            $values: $default-horizontal-gutters,
+            $values: $default-horizontal-base-unit,
             $multiplier: $left
         );
     }
@@ -384,7 +356,7 @@
     @if ($right != none) {
         @include fluid-property-map(
             $property: padding-right,
-            $values: $default-horizontal-gutters,
+            $values: $default-horizontal-base-unit,
             $multiplier: $right
         );
     }

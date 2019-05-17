@@ -13,15 +13,15 @@
     @include typeset(
         $font-family: "Inter",
         $size: 64,
-        $line-height: 4,
-        $below: 3
+        $line-height: 3,
+        $below: 8
     );
 
     @media (max-width: map-get($breakpoints, "md")) {
         @include typeset(
             $font-family: "Inter",
             $size: 48,
-            $line-height: 5,
+            $line-height: 3,
             $below: 2
         );
     }
@@ -33,15 +33,15 @@
         $font-family: "Inter",
         $size: 32,
         $line-height: 2,
-        $below: 2
+        $below: 3
     );
 
     @media (max-width: map-get($breakpoints, "lg")) {
         @include typeset(
             $font-family: "Inter",
             $size: 32,
-            $line-height: 3,
-            $below: 2
+            $line-height: 2,
+            $below: 3
         );
     }
 }
@@ -53,7 +53,7 @@
         $font-family: "Inter",
         $size: 24,
         $line-height: 2,
-        $below: 2
+        $below: 3
     );
 
     @media (max-width: map-get($breakpoints, "lg")) {
@@ -61,7 +61,7 @@
             $font-family: "Inter",
             $size: 24,
             $line-height: 3,
-            $below: 2
+            $below: 3
         );
     }
 }

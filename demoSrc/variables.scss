@@ -16,12 +16,12 @@ $default-container-padding-left: (
 
 $default-container-padding-right: $default-container-padding-left;
 
-$default-horizontal-gutters: (
+$default-horizontal-base-unit: (
     sm: 8px,
     xxxl: 48px
 );
 
-$default-vertical-gutters: $default-horizontal-gutters;
+$default-vertical-base-unit: $default-horizontal-base-unit;
 
 $font-sizes: (
     min: 12px,
@@ -32,6 +32,4 @@ $cap-heights: (
     Inter: 0.7
 );
 
-$default-container-margin-bottom: 3;
-$default-container-margin-top: 1;
-$default-column-margin-top: 1;
+$overlay-columns: 12 !default;

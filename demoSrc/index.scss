@@ -19,7 +19,7 @@ body {
 }
 
 .demo-title {
-    @include grid-container($margin-top: 8, $margin-bottom: 2);
+    @include grid-container($margin-top: 4, $margin-bottom: 0);
 
     & > * {
         @include grid-column(1);
@@ -27,49 +27,36 @@ body {
     }
 }
 
-.typography-demo,
-.images-demo {
+.typography-demo {
     @include grid;
     @include wysiwyg;
 
     &__title {
-        @include grid-column-new(
-            (
-                min: (
-                    width: 1
-                ),
-                sm: (
-                    width: 3/12
-                )
-            )
+        @include grid-column(
+            ( min: 1, sm: 3/12 )
         );
     }
 
     &__body {
-        @include grid-column-new(
-            (
-                min: (
-                    width: 1
-                ),
-                sm: (
-                    width: 1/2
-                )
-            )
+        @include grid-column(
+            $width: (min: 1, sm: 1/2)
         );
     }
 
     &__sidebar {
-        @include grid-column-new(
-            (
-                min: (
-                    width: 1,
-                    margin-left: 0
-                ),
-                sm: (
-                    width: 5/24,
-                    margin-left: 1/24
-                )
-            )
+        @include grid-column(
+            $width: (min: 1, sm: 5/24),
+            $margin-left: (min: 0, sm: 1/24)
+        );
+    }
+}
+
+.images-demo {
+    @include grid($column-margin-top: 0, $column-margin-bottom: 0);
+
+    &__column {
+        @include grid-column(
+            $width: 1
         );
     }
 }
@@ -131,12 +118,17 @@ body {
 
     &__column {
         @include grid-column(
-            1,
+            1/2,
             $padding-top: 1,
             $padding-bottom: 1,
             $padding-left: 1,
             $padding-right: 1
         );
+
+        & > * {
+            background-color: #999;
+        }
+
         background-color: #333;
     }
 }
@@ -254,7 +246,7 @@ body {
 }
 
 .nested-grid-demo-nested-grid {
-    @include grid($nested: true, $margin-top: 0);
+    @include grid($nested: true, $margin-top: -0.5, $margin-bottom: 0.5);
 
     &__column {
         @include grid-column($width: 1/2);
