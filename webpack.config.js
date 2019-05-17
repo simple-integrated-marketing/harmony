@@ -4,17 +4,18 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
 
 const settings = {
     name: 'Harmony',
     devServerUrl: 'http://localhost:8080',
     jsEntry: {
         'grid-tools': './src/grid-tools',
+        'demo-index': './demoSrc/index.scss',
     },
     destination: path.resolve(__dirname),
-    templates: path.resolve(__dirname, 'demoSrc'),
+    demoSrc: path.resolve(__dirname, 'demoSrc'),
 };
 
 // Configure the twig loader
@@ -135,7 +136,7 @@ module.exports = (env, argv) => {
         },
         devServer: {
             public: settings.devServerUrl,
-            contentBase: path.resolve(__dirname, settings.templates),
+            contentBase: path.resolve(__dirname, settings.demoSrc),
             quiet: true,
             stats: 'errors-only',
             host: '0.0.0.0',
@@ -171,23 +172,23 @@ module.exports = (env, argv) => {
                     console.log(error.message);
                 },
             }),
-            // new HtmlWebpackPlugin({
-            //     filename: 'index.html',
-            //     template: path.resolve(
-            //         __dirname,
-            //         settings.templates,
-            //         `./index.twig`
-            //     ),
-            // }),
-            // new HtmlWebpackPlugin({
-            //     filename: 'introduction.html',
-            //     template: path.resolve(
-            //         __dirname,
-            //         settings.templates,
-            //         `./introduction.twig`
-            //     ),
-            // }),
-            // new HtmlBeautifyPlugin(),
+            new HtmlWebpackPlugin({
+                filename: 'index.html',
+                template: path.resolve(
+                    __dirname,
+                    settings.demoSrc,
+                    `./index.twig`
+                ),
+            }),
+            new HtmlWebpackPlugin({
+                filename: 'introduction.html',
+                template: path.resolve(
+                    __dirname,
+                    settings.demoSrc,
+                    `./introduction.twig`
+                ),
+            }),
+            new HtmlBeautifyPlugin(),
             isProduction
                 ? new MiniCssExtractPlugin({
                       filename: '[name].css',
