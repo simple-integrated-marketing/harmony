@@ -5,8 +5,7 @@
     "author": "https://github.com/simple-integrated-marketing",
     "license": "ISC",
     "scripts": {
-        "start": "webpack-dev-server --mode development --devtool inline-source-map --config webpack.config.js",
-        "build": "webpack --mode production --config webpack.config.js --progress --hide-modules"
+        "start": "webpack-dev-server --mode development --devtool inline-source-map --config webpack.config.js"
     },
     "dependencies": {
         "core-js": "^3.0.1",
