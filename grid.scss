@@ -517,10 +517,6 @@
         width: 100%;
         background-color: $colour-column-overlay;
     }
-
-    &__column:nth-child(n + $overlay-columns) {
-        display: none;
-    }
 }
 
 // Validate variables
