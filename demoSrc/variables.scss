@@ -11,25 +11,28 @@ $breakpoints: (
 
 $default-container-padding-left: (
     sm: 16px,
-    xxxl: 320px
+    xxxl: 512px
 );
 
 $default-container-padding-right: $default-container-padding-left;
 
 $default-horizontal-base-unit: (
     sm: 8px,
-    xxxl: 48px
+    xxxl: 16px
 );
 
 $default-vertical-base-unit: $default-horizontal-base-unit;
 
 $font-sizes: (
-    min: 12px,
+    min: 8px,
+    md: 10px,
+    lg: 6px,
+    xl: 32px,
     xxxl: 18px
 );
 
 $cap-heights: (
-    Inter: 0.7
+    Inter: 0.55
 );
 
 $overlay-columns: 12 !default;
