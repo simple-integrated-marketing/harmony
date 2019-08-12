@@ -1,5 +1,5 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -161,9 +161,7 @@ module.exports = (env, argv) => {
             new FriendlyErrorsWebpackPlugin({
                 compilationSuccessInfo: {
                     messages: [
-                        `The ${settings.name} demo is running at: ${
-                            settings.devServerUrl
-                        }`,
+                        `The ${settings.name} demo is running at: ${settings.devServerUrl}`,
                     ],
                 },
                 onErrors: (severity, errors) => {
