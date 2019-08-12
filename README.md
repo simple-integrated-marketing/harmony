@@ -4,6 +4,8 @@
 
 🎶🙌 A grid system and typography baseline grid based 100% on fluid properties.
 
+<h2><a href="https://harmony-demo.netlify.com">View demo &rsaquo;</a></h2>
+
 ## Features
 
 - Highly customisable global config for body and grid system metrics, font-sizes and baseline grid-locked line heights
