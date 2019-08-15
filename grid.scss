@@ -35,6 +35,8 @@
  */
 @mixin grid-container(
     $nested: false,
+    $use-horizontal-gutters: $default-use-horizontal-gutters,
+    $use-vertical-gutters: $default-use-vertical-gutters,
     $margin-top: $default-container-margin-top,
     $margin-bottom: $default-container-margin-bottom,
     $padding-top: $default-container-padding-top,
@@ -58,23 +60,35 @@
     // This is to ensure that all columns within a container are evenly spaced along the vertical axis, with the top-most columns'
     // top-margins negated by the negative margin of the grid container. Otherwise, headaches happen.
 
-    $margin-top: $margin-top - $column-margin-top;
+    @if $use-vertical-gutters {
+        $margin-top: $margin-top - $column-margin-top;
 
-    @include grid-container-vertical-metrics(
-        $nested: $nested,
-        $margin-top: $margin-top,
-        $margin-bottom: $margin-bottom,
-        $padding-top: $padding-top,
-        $padding-bottom: $padding-bottom
-    );
-
-    & > * {
-        @include grid-column-vertical-metrics(
-            $padding-top: if($column-padding-top != null, $column-padding-top, $default-column-padding-top),
-            $padding-bottom: if($column-padding-bottom != null, $column-padding-bottom, $default-column-padding-bottom),
-            $margin-top: $column-margin-top,
-            $margin-bottom: $column-margin-bottom
+        @include grid-container-vertical-metrics(
+            $nested: $nested,
+            $margin-top: $margin-top,
+            $margin-bottom: $margin-bottom,
+            $padding-top: $padding-top,
+            $padding-bottom: $padding-bottom
         );
+
+        & > * {
+            @include grid-column-vertical-metrics(
+                $padding-top:
+                    if(
+                        $column-padding-top != null,
+                        $column-padding-top,
+                        $default-column-padding-top
+                    ),
+                $padding-bottom:
+                    if(
+                        $column-padding-bottom != null,
+                        $column-padding-bottom,
+                        $default-column-padding-bottom
+                    ),
+                $margin-top: $column-margin-top,
+                $margin-bottom: $column-margin-bottom
+            );
+        }
     }
 
     // Horizontal padding and margins are set here.
@@ -82,6 +96,7 @@
     // For nested grid containers, the left and right *margins* are set from $default-horizontal-base-unit.
     @include grid-container-horizontal-metrics(
         $nested: $nested,
+        $use-horizontal-gutters: $use-horizontal-gutters,
         $padding-left: $padding-left,
         $padding-right: $padding-right
     );
@@ -112,11 +127,15 @@
 
 @mixin grid-container-horizontal-metrics(
     $nested: false,
+    $use-horizontal-gutters: $use-horizontal-gutters,
     $padding-left: $default-container-padding-left,
     $padding-right: $default-container-padding-right
 ) {
     @if ($nested) {
-        @if (is-valid-property-map($default-horizontal-base-unit)) {
+        @if (
+            $use-horizontal-gutters and
+                is-valid-property-map($default-horizontal-base-unit)
+        ) {
             @include fluid-property-map(
                 $property: 'margin-left',
                 $values: $default-horizontal-base-unit,
@@ -157,7 +176,9 @@
     $padding-right: $default-column-padding-right,
     $padding-top: $default-column-padding-top,
     $padding-bottom: $default-column-padding-bottom,
-    $spill-direction: null
+    $spill-direction: null,
+    $use-horizontal-gutters: $default-use-vertical-gutters,
+    $use-vertical-gutters: $default-use-vertical-gutters
 ) {
     display: block;
     position: relative;
@@ -170,11 +191,23 @@
 
     @if ($default-horizontal-base-unit != null) {
         // Gutters
-        @if ($padding-left != null) {
+        @if (
+            $padding-left !=
+                null and
+                $padding-left !=
+                0 and
+                $use-horizontal-gutters
+        ) {
             @include grid-column-horizontal-padding($left: $padding-left);
         }
 
-        @if ($padding-right != null) {
+        @if (
+            $padding-right !=
+                null and
+                $padding-left !=
+                0 and
+                $use-horizontal-gutters
+        ) {
             @include grid-column-horizontal-padding($right: $padding-right);
         }
 
@@ -201,7 +234,11 @@
         }
     }
 
-    @if ($default-vertical-base-unit != null) {
+    @if (
+        $default-vertical-base-unit != null,
+        ($padding-top != 0 and $padding-bottom != 0),
+        $use-vertical-gutters
+    ) {
         @include grid-container-vertical-metrics(
             $padding-top: $padding-top,
             $padding-bottom: $padding-bottom
@@ -318,7 +355,7 @@
         padding-top: $padding-top,
         padding-bottom: $padding-bottom,
         margin-top: $margin-top,
-        margin-bottom: $margin-bottom
+        margin-bottom: $margin-bottom,
     );
 
     // Same as each loop used in grid-container-vertical-metrics-absolute.
@@ -345,7 +382,7 @@
  */
 
 @mixin grid-column-horizontal-padding($left: none, $right: none) {
-    @if ($left != none) {
+    @if ($left != none and $left != 0) {
         @include fluid-property-map(
             $property: padding-left,
             $values: $default-horizontal-base-unit,
@@ -353,7 +390,7 @@
         );
     }
 
-    @if ($right != none) {
+    @if ($right != none and $right != 0) {
         @include fluid-property-map(
             $property: padding-right,
             $values: $default-horizontal-base-unit,
