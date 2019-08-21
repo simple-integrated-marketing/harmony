@@ -235,9 +235,10 @@
     }
 
     @if (
-        $default-vertical-base-unit != null,
-        ($padding-top != 0 and $padding-bottom != 0),
-        $use-vertical-gutters
+        $default-vertical-base-unit !=
+            null and
+            ($padding-top != 0 and $padding-bottom != 0) and
+            $use-vertical-gutters
     ) {
         @include grid-container-vertical-metrics(
             $padding-top: $padding-top,
