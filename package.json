@@ -1,6 +1,6 @@
 {
 	"name": "harmony",
-	"version": "1.5.1",
+	"version": "2.0.0",
 	"description": "🎶🙌 An opinionated spring-board for website projects.",
 	"author": "https://github.com/simple-integrated-marketing",
 	"license": "ISC",
@@ -9,15 +9,15 @@
 		"build": "webpack --mode production --config webpack.config.js --progress --hide-modules"
 	},
 	"dependencies": {
-		"core-js": "^3.0.1",
-		"node-sass": "^4.12.0"
+		"core-js": "^3.26.1",
+		"node-sass": "^6.0.1"
 	},
 	"prettier": {
 		"trailingComma": "es5",
-		"useTabs": false,
+		"useTabs": true,
 		"tabWidth": 4,
 		"semi": true,
-		"singleQuote": true
+		"singleQuote": false
 	},
 	"main": "core.scss",
 	"devDependencies": {
@@ -34,7 +34,7 @@
 		"mini-css-extract-plugin": "^0.6.0",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
 		"postcss-loader": "^3.0.0",
-		"sass-loader": "^7.1.0",
+		"sass-loader": "^10.4.1",
 		"style-loader": "^0.23.1",
 		"terser-webpack-plugin": "^1.2.3",
 		"twig": "^1.13.3",
